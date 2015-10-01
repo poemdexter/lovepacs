@@ -47,3 +47,4 @@ task copyToLib(type: Copy) {
 }
 
 stage.dependsOn(copyToLib)
+stage.dependsOn(build)
