@@ -1,0 +1,49 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.2.6.RELEASE"
+    }
+}
+
+apply plugin: 'spring-boot'
+
+jar {
+    baseName = 'lovepacs-app'
+    version = '0.0.1-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+mainClassName = 'org.lovepacs.LovepacsApplication'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    //compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    //compile 'com.h2database:h2'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.7'
+}
+
+// heroku - https://devcenter.heroku.com/articles/deploying-gradle-apps-on-heroku
+
+task stage {
+    dependsOn installDist
+}
+
+task copyToLib(type: Copy) {
+    into "$buildDir/lib"
+    from(configurations.compile)
+}
+
+stage.dependsOn(copyToLib)

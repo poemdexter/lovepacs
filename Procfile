@@ -1,0 +1,1 @@
+web: build/install/lovepacs-app/bin/lovepacs-app
