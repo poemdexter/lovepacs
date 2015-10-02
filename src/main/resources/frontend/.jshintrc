@@ -1,0 +1,8 @@
+{
+  "globals": {
+    "angular": false,
+    "document": false
+  },
+  "node":true,
+  "esnext":true
+}
