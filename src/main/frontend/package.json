@@ -2,8 +2,8 @@
   "name": "rn-pattern-library",
   "version": "0.0.0",
   "scripts": {
-    "start": "node node_modules/.bin/webpack-dev-server --content-base ../static --hot --optimize-occurence-order --optimize-dedupe --port 3020",
-    "start-win": "node_modules\\.bin\\webpack-dev-server.cmd -—content-base ../static --hot --port 3020"
+    "start": "node node_modules/.bin/webpack-dev-server --content-base ../resources/static --hot --optimize-occurence-order --optimize-dedupe --port 3020",
+    "start-win": "node_modules\\.bin\\webpack-dev-server.cmd -—content-base ../resources/static --hot --port 3020"
   },
   "dependencies": {
     "angular": "1.4.2",

@@ -5,5 +5,5 @@ out
 *.iml
 *.ipr
 *.iws
-src/main/resources/frontend/node_modules
+src/main/frontend/node_modules
 .DS_Store

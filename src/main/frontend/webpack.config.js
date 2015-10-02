@@ -1,12 +1,12 @@
 'use strict';
 var webpack = require('webpack'),
   path = require('path'),
-  APP = __dirname + '/../static';
+  APP = __dirname + '/../resources/static';
 
 module.exports = {
   context: APP,
   entry: {
-    app: ['webpack/hot/dev-server', '../frontend/core/bootstrap.js']
+    app: ['webpack/hot/dev-server', '../../frontend/core/bootstrap.js']
   },
   output: {
     path: APP,
