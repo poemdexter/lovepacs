@@ -1,4 +1,4 @@
-# Lovepacs App
+# Lovepacs App - http://lovepacs.herokuapp.com/
 
 ## Development
 
@@ -8,13 +8,12 @@ build (OSX): `./gradlew stage`
 
 build (Win): `gradlew.bat stage`
 
-deploy local: `heroku local web`
-
 ## Deployment
 
 Heroku is set up to watch the `master` branch on Github.  It will automatically build and deploy.
 
-accessible at `http://localhost:8080`
+deploy local: `heroku local web`
+
+accessible at `http://localhost:5000`
 
 get logs: `heroku logs --app lovepacs`
-
