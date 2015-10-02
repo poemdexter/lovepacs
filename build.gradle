@@ -39,14 +39,9 @@ task wrapper(type: Wrapper) {
 
 // heroku - https://devcenter.heroku.com/articles/deploying-gradle-apps-on-heroku
 
-task stage {
-   dependsOn installDist
-}
-
 task copyToLib(type: Copy) {
     into "$buildDir/lib"
     from(configurations.compile)
 }
 
-stage.dependsOn(copyToLib)
-stage.dependsOn(build)
+build.dependsOn(copyToLib)
