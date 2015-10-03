@@ -7,6 +7,7 @@ require('angular');
 require('angular-ui-bootstrap');
 require('bootstrap-sass');
 require('ui-router-extras');
+require('font-awesome-webpack');
 
 require('../styles/index.scss');
 

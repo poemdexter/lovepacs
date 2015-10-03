@@ -9,18 +9,19 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Price</th>
+                <th>Value</th>
                 <th>Enabled</th>
                 <th></th>
             </tr>
-            <tr ng-repeat="item in items">
+            <tr ng-repeat="item in controller.items">
                 <td>{{item.id}}</td>
                 <td>{{item.name}}</td>
-                <td>{{item.price}}</td>
+                <td>{{item.price | currency:"$"}}</td>
                 <td>{{item.enabled}}</td>
-                <td></td>
+                <td><a ui-sref="container.items.item({'id':{{item.id}}})"><i class="fa fa-eye"></i></a></td>
             </tr>
         </table>
     </div>
 </div>
 
+<div ui-view="modal"></div>

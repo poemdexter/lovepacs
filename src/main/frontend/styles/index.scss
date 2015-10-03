@@ -2,3 +2,25 @@ $bootstrap-sass-asset-helper:	true;
 $icon-font-path:				'../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 
 @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
+
+.popup {
+	position:fixed;
+	top: 25px;
+	left:25px;
+	right:25px;
+	bottom:25px;
+	background:white;
+	padding:50px;
+	border:1px solid #ddd;
+	border-radius: 5px;
+	z-index:1;
+}
+
+.popup-shadow {
+	position:fixed;
+	top: 0;
+	left:0;
+	right:0;
+	bottom:0;
+	background:rgba(0,0,0,.8);
+}

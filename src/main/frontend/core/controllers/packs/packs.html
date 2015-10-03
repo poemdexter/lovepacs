@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-sm-12">
+        <button type="button" class="btn btn-default" ui-sref="modal.pack.create">New Pack</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Enabled</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="pack in controller.packs">
+                <td>{{pack.id}}</td>
+                <td>{{pack.name}}</td>
+                <td>{{pack.price | currency:"$"}}</td>
+                <td>{{pack.enabled}}</td>
+                <td><a ui-sref="container.packs.pack({'id':{{pack.id}}})"><i class="fa fa-eye"></i></a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div ui-view="modal"></div>
