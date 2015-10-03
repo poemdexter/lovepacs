@@ -5,7 +5,6 @@ class LocationCtrl {
     	
     	ApiService.getLocation($stateParams.id).then(function(data) {
     		$scope.location = data.data;
-    		console.log(data);
     	});
     	
     	ApiService.getItems($stateParams.id).then(function(data) {
@@ -13,7 +12,6 @@ class LocationCtrl {
     		angular.forEach(data.data, function(value, key) {
 			  $scope.items[value.id] = value;
 			});
-    		console.log($scope.items);
     	});
     }
 }

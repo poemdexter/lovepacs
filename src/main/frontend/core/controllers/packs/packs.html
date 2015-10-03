@@ -9,14 +9,12 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Value</th>
                 <th>Enabled</th>
                 <th></th>
             </tr>
             <tr ng-repeat="pack in controller.packs">
                 <td>{{pack.id}}</td>
                 <td>{{pack.name}}</td>
-                <td>{{pack.price | currency:"$"}}</td>
                 <td>{{pack.enabled}}</td>
                 <td><a ui-sref="container.packs.pack({'id':{{pack.id}}})"><i class="fa fa-pencil"></i></a></td>
             </tr>

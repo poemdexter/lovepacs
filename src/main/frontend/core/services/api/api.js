@@ -31,6 +31,10 @@ class ApiService {
         return this._$http.get('/box/'+id, {});
     }
 
+    updatePack(data) {
+        return this._$http.put('/box/', data);
+    }
+
     static templateFactory($http){
         return new ApiService($http);
     }
