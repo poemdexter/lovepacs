@@ -24,6 +24,8 @@ public class Item {
     @NotNull
     private BigDecimal price;
 
+    public Item() {}
+
     public Item(String name, BigDecimal price,  Boolean enabled) {
         this.name = name;
         this.price = price;
