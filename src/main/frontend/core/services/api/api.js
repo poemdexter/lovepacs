@@ -7,6 +7,10 @@ class ApiService {
         return this._$http.get('/location/', {});
     }
 
+    updateInventory(data) {
+        return this._$http.put('/location/', data);
+    }
+
     getLocation(id) {
         return this._$http.get('/location/'+id, {});
     }

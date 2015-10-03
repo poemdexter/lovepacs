@@ -10,7 +10,6 @@ class PackCtrl {
 
         $q.all([packPromise,itemsPromise]).then(function(data) {
             $scope.pack = data[0].data;
-            console.log($scope.pack);
             $scope.items = {};
 
             angular.forEach(data[1].data, function(value, key) {
