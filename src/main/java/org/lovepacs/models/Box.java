@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 public class Box {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotNull
@@ -19,6 +19,8 @@ public class Box {
 
     @NotNull
     private Boolean enabled;
+
+    public Box() {}
 
     public Box(String name, Boolean enabled) {
         this.name = name;

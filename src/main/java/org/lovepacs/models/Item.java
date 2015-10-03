@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class Item {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotNull
@@ -23,6 +23,8 @@ public class Item {
 
     @NotNull
     private BigDecimal price;
+
+    public Item() {}
 
     public Item(String name, BigDecimal price,  Boolean enabled) {
         this.name = name;
