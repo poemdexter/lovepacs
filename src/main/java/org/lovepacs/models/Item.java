@@ -2,6 +2,7 @@ package org.lovepacs.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 /**
  * @version 1.0
@@ -20,8 +21,12 @@ public class Item {
     @NotNull
     private Boolean enabled;
 
-    public Item(String name, Boolean enabled) {
+    @NotNull
+    private BigDecimal price;
+
+    public Item(String name, BigDecimal price,  Boolean enabled) {
         this.name = name;
+        this.price = price;
         this.enabled = enabled;
     }
 
@@ -43,5 +48,13 @@ public class Item {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }
