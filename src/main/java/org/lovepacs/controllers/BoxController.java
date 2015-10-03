@@ -73,12 +73,11 @@ public class BoxController {
 
     // Create a new Box and Contents
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    void createBox(@RequestBody BoxJson boxJson) {
+    BoxJson createBox(@RequestBody BoxJson boxJson) {
 
         if(boxJson.getId() != null) {
             // This is an update instead
-            updateBox(boxJson);
-            return;
+            return updateBox(boxJson);
         }
 
         Box box = new Box();
@@ -86,18 +85,21 @@ public class BoxController {
         box.setEnabled(boxJson.getEnabled());
 
         box = boxRepository.save(box);
+        boxJson.setId(box.getId());
 
         updateBoxContents(box.getId(), boxJson.getContents());
+
+        return boxJson;
     }
 
     // Update an Existing Box
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    void updateBox(@RequestBody BoxJson boxJson) {
+    BoxJson updateBox(@RequestBody BoxJson boxJson) {
 
         if(boxJson.getId() == null) {
             // This is a create instead
-            createBox(boxJson);
-            return;
+            return createBox(boxJson);
+
         }
 
         Box box = boxRepository.findOne(boxJson.getId());
@@ -112,6 +114,8 @@ public class BoxController {
         box = boxRepository.save(box);
 
         updateBoxContents(box.getId(), boxJson.getContents());
+
+        return boxJson;
     }
 
 
@@ -129,6 +133,8 @@ public class BoxController {
                 myContent.setItemId(content.getItemId());
                 myContent.setQuantity(content.getQuantity());
                 myContent = contentRepository.save(myContent);
+                content.setId(myContent.getId());
+
             } else {
                 // An update
                 if(contentRepository.exists(content.getId())) {
