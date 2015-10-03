@@ -1,14 +1,13 @@
 package org.lovepacs.controllers;
 
 import org.lovepacs.json.BoxJson;
+import org.lovepacs.json.ContentJson;
 import org.lovepacs.models.Box;
+import org.lovepacs.models.Content;
 import org.lovepacs.repositories.BoxRepository;
 import org.lovepacs.repositories.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -52,22 +51,98 @@ public class BoxController {
 
     // Create a new Box and Contents
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    void createBox(BoxJson boxJson) {
+    void createBox(@RequestBody BoxJson boxJson) {
 
+        if(boxJson.getId() != null) {
+            // This is an update instead
+            updateBox(boxJson);
+            return;
+        }
 
+        Box box = new Box();
+        box.setName(boxJson.getName());
+        box.setEnabled(boxJson.getEnabled());
 
+        box = boxRepository.save(box);
+
+        updateBoxContents(box.getId(), boxJson.getContents());
     }
 
     // Update an Existing Box
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    void updateBox(BoxJson boxJson) {
+    void updateBox(@RequestBody BoxJson boxJson) {
 
+        if(boxJson.getId() == null) {
+            // This is a create instead
+            createBox(boxJson);
+            return;
+        }
 
+        Box box = boxRepository.findOne(boxJson.getId());
 
+        if(box == null) {
+            // TODO: bad stuff
+        }
+
+        box.setName(boxJson.getName());
+        box.setEnabled(boxJson.getEnabled());
+
+        box = boxRepository.save(box);
+
+        updateBoxContents(box.getId(), boxJson.getContents());
     }
 
 
+    private void updateBoxContents(Integer boxId, List<ContentJson> contents) {
 
+        // Get the existing items. We may need to delete some
+        List<Content> currentContents = contentRepository.findAllByBoxId(boxId);
 
+        for(ContentJson content : contents) {
+
+            if(content.getId() == null) {
+                // New contents, so just insert
+                Content myContent = new Content();
+                myContent.setBoxId(boxId);
+                myContent.setItemId(content.getItemId());
+                myContent.setQuantity(content.getQuantity());
+                myContent = contentRepository.save(myContent);
+            } else {
+                // An update
+                if(contentRepository.exists(content.getId())) {
+                    if(content.getQuantity() == 0) {
+                        contentRepository.delete(content.getId());
+
+                    } else {
+                        Content myContent = contentRepository.findOne(content.getId());
+                        myContent.setQuantity(content.getQuantity());
+                        contentRepository.save(myContent);
+                    }
+                } else {
+                    // We got an ID, but there isn't a row. Bad stuff.
+                    // TODO: make more bad stuff happen
+                }
+            }
+        }
+
+        // Finally, compare the list of current contents to the contents from the JSON.
+        // If we didn't get a row in contents that we had known about before, build a list
+        // of IDs to delete.
+        for(Content currentContent : currentContents) {
+
+            boolean found = false;
+
+            for(ContentJson jsonContent : contents) {
+                if(jsonContent.getId() == currentContent.getId()) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if(!found) {
+                contentRepository.delete(currentContent.getId());
+            }
+        }
+    }
 
 }

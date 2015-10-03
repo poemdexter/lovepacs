@@ -1,12 +1,10 @@
 package org.lovepacs.controllers;
 
+import org.lovepacs.json.ItemJson;
 import org.lovepacs.models.Item;
 import org.lovepacs.repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,4 +42,40 @@ public class ItemController {
             itemRepository.save(item);
         }
     }
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    void createItem(@RequestBody ItemJson itemJson) {
+
+        if(itemJson.getId() != null) {
+            // It's an update
+            updateItem(itemJson);
+            return;
+        }
+
+        Item item = new Item();
+        item.setName(itemJson.getName());
+        item.setEnabled(itemJson.getEnabled());
+        item.setPrice(itemJson.getPrice());
+
+        item  = itemRepository.save(item);
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    void updateItem(@RequestBody ItemJson itemJson) {
+
+        if(itemJson.getId() == null) {
+            // It's a create
+            createItem(itemJson);
+            return;
+        }
+
+        Item item = itemRepository.findOne(itemJson.getId());
+        item.setName(itemJson.getName());
+        item.setEnabled(itemJson.getEnabled());
+        item.setPrice(itemJson.getPrice());
+
+        itemRepository.save(item);
+    }
+
+
 }
