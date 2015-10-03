@@ -13,7 +13,7 @@ import java.util.List;
 public class ItemController {
 
     @Autowired
-    ItemRepository itemRepository;
+    private ItemRepository itemRepository;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     Item getItem(@PathVariable("id") final int id) {
@@ -22,6 +22,7 @@ public class ItemController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     List<Item> getAllItems() {
+
         return (List<Item>)itemRepository.findAll();
     }
 

@@ -7,6 +7,18 @@ class ApiService {
         return this._$http.get('/item/', {});
     }
 
+    getItem(id) {
+        return this._$http.get('/item/'+id, {});
+    }
+
+    getPacks() {
+        return this._$http.get('/box/', {});
+    }
+
+    getPack(id) {
+        return this._$http.get('/box/'+id, {});
+    }
+
     static templateFactory($http){
         return new ApiService($http);
     }
