@@ -13,7 +13,7 @@ import java.util.List;
 public class ItemController {
 
     @Autowired
-    ItemRepository itemRepository;
+    private ItemRepository itemRepository;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     Item getItem(@PathVariable("id") final int id) {
