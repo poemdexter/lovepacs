@@ -45,9 +45,11 @@ create table locations (
 );
 
 create table inventory (
+  id int not null auto_increment,
   location int not null,
   item int not null,
   quantity int not null,
+  primary key (id),
   unique key uni_location_item (location, item),
   constraint fk_inv_location foreign key (location) references locations(id),
   constraint fk_inv_item foreign key (item) references items(id)
