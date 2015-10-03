@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-sm-12">
-        <button type="button" class="btn btn-default" ui-sref="modal.item">New Item</button>
+        <button type="button" class="btn btn-default" ui-sref="container.items.create">New Item</button>
     </div>
 </div>
 <div class="row">
@@ -18,7 +18,7 @@
                 <td>{{item.name}}</td>
                 <td>{{item.price | currency:"$"}}</td>
                 <td>{{item.enabled}}</td>
-                <td><a ui-sref="container.items.item({'id':{{item.id}}})"><i class="fa fa-eye"></i></a></td>
+                <td><a ui-sref="container.items.item({'id':{{item.id}}})"><i class="fa fa-pencil"></i></a></td>
             </tr>
         </table>
     </div>

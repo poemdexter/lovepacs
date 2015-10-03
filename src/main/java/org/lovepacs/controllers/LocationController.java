@@ -1,10 +1,14 @@
 package org.lovepacs.controllers;
 
 import org.lovepacs.json.InventoryJson;
+import org.lovepacs.json.InventoryNeedJson;
+import org.lovepacs.json.ItemNeedJson;
 import org.lovepacs.json.LocationJson;
 import org.lovepacs.models.Inventory;
+import org.lovepacs.models.Item;
 import org.lovepacs.models.Location;
 import org.lovepacs.repositories.InventoryRepository;
+import org.lovepacs.repositories.ItemRepository;
 import org.lovepacs.repositories.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +25,9 @@ public class LocationController {
 
     @Autowired
     InventoryRepository inventoryRepository;
+
+    @Autowired
+    ItemRepository itemRepository;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     LocationJson getLocation(@PathVariable("id") final int id) {
@@ -56,6 +63,28 @@ public class LocationController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     List<Location> getAllLocations() {
         return (List<Location>)locationRepository.findAll();
+    }
+
+    @RequestMapping(value = "/inventory", method = RequestMethod.GET)
+    List<InventoryNeedJson> getAllLocationInventories() {
+        List<InventoryNeedJson> inventoryNeedList = new ArrayList<>();
+
+        List<Location> locations = (List<Location>) locationRepository.findAll();
+        for (Location location : locations) {
+            InventoryNeedJson inventoryNeed = new InventoryNeedJson();
+            inventoryNeed.setName(location.getName());
+
+            List<ItemNeedJson> itemNeedList = new ArrayList<>();
+            List<Inventory> inventories = inventoryRepository.findAllByLocationId(location.getId());
+            for (Inventory inventory : inventories) {
+                Item item = itemRepository.findOne(inventory.getItemId());
+                itemNeedList.add(new ItemNeedJson(item.getName(), inventory.getQuantity()));
+            }
+            inventoryNeed.setItems(itemNeedList);
+            inventoryNeedList.add(inventoryNeed);
+        }
+
+        return inventoryNeedList;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

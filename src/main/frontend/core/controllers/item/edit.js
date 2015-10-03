@@ -2,11 +2,16 @@ class ItemCtrl {
 
     constructor($scope, $stateParams, $state, ApiService){
     	var self = this;
-    	this._$state = $state;
 
     	ApiService.getItem($stateParams.id).then(function(data) {
-    		self.item = data.data;
+    		$scope.item = data.data;
     	});
+
+        $scope.save = function() {
+            ApiService.updateItem($stateParams.id, $scope.item).then(function(data) {
+                $state.go("container.items", null, { reload: true });
+            });
+        };
     }
 }
 

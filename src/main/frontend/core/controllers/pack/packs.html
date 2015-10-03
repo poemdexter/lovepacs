@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-sm-12">
-        <button type="button" class="btn btn-default" ui-sref="modal.pack.create">New Pack</button>
+        <button type="button" class="btn btn-default" ui-sref="container.packs.create">New Pack</button>
     </div>
 </div>
 <div class="row">
@@ -9,16 +9,14 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Value</th>
                 <th>Enabled</th>
                 <th></th>
             </tr>
             <tr ng-repeat="pack in controller.packs">
                 <td>{{pack.id}}</td>
                 <td>{{pack.name}}</td>
-                <td>{{pack.price | currency:"$"}}</td>
                 <td>{{pack.enabled}}</td>
-                <td><a ui-sref="container.packs.pack({'id':{{pack.id}}})"><i class="fa fa-eye"></i></a></td>
+                <td><a ui-sref="container.packs.pack({'id':{{pack.id}}})"><i class="fa fa-pencil"></i></a></td>
             </tr>
         </table>
     </div>
