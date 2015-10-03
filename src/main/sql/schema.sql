@@ -15,6 +15,7 @@ create table authorities (
 create table items (
     id tinyint(5) not null auto_increment,
     name varchar(64) not null,
+    price decimal(5,2) default 0.00,
     enabled tinyint not null default 1,
     primary key (id)
 );
