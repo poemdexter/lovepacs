@@ -15,9 +15,11 @@ public class Content {
     private Integer id;
 
     @NotNull
+    @Column(name = "box")
     private Integer boxId;
 
     @NotNull
+    @Column(name = "item")
     private Integer itemId;
 
     @NotNull

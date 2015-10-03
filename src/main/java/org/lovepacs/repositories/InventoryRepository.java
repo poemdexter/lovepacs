@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface InventoryRepository extends CrudRepository<Inventory, Integer> {
 
-    List<Inventory> findAllByInventoryId(Integer locationId);
+    List<Inventory> findAllByLocationId(Integer locationId);
 }

@@ -7,6 +7,10 @@ spring:
     driverClassName: com.mysql.jdbc.Driver
     username: username
     password: password
+    max-active: 1
+    max-idle: 1
+    min-idle: 1
+    initial-size: 1
 
   jpa:
     show-sql: true
