@@ -6,14 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserJson {
 
-    @JsonProperty private Integer id;
     @JsonProperty private String name;
     @JsonProperty private String password;
     @JsonProperty private Boolean enabled;
-
-    public Integer getId() {
-        return id;
-    }
 
     public String getName() {
         return name;

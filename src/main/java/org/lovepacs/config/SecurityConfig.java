@@ -1,8 +1,11 @@
 package org.lovepacs.config;
 
+import org.lovepacs.service.CurrentUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,10 +19,11 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private DataSource dataSource;
+    private CurrentUserDetailsService currentUserDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -28,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/resources/**", "/**"); //todo: remove "/**"
+        web.ignoring().antMatchers("/resources/**"); //todo: remove "/**"
     }
 
     @Override
@@ -43,9 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(this.dataSource)
-                .passwordEncoder(passwordEncoder())
-                .usersByUsernameQuery("select username as principal, password as credentials, true from users where username = ? and enabled = 1");
+
+        auth.userDetailsService(currentUserDetailsService).passwordEncoder(passwordEncoder());
     }
 }

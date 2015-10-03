@@ -8,6 +8,7 @@ public class InventoryJson {
 
     @JsonProperty private Integer id;
     @JsonProperty private Integer itemId;
+    @JsonProperty private String itemName;
     @JsonProperty private Integer quantity;
 
     public Integer getId() {
@@ -24,6 +25,14 @@ public class InventoryJson {
 
     public void setItemId(Integer itemId) {
         this.itemId = itemId;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public Integer getQuantity() {

@@ -1,9 +1,13 @@
 package org.lovepacs.controllers;
 
+import org.lovepacs.json.InventoryLevelJson;
 import org.lovepacs.json.ItemJson;
 import org.lovepacs.models.Item;
+import org.lovepacs.repositories.InventoryRepository;
 import org.lovepacs.repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,14 +19,25 @@ public class ItemController {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private InventoryRepository inventoryRepository;
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     Item getItem(@PathVariable("id") final int id) {
         return itemRepository.findOne(id);
     }
 
+    @RequestMapping(value = "/{id}/inventory", method = RequestMethod.GET)
+    List<InventoryLevelJson> getInventoryForOtherSite(@PathVariable("id") final int itemId) {
+
+        return null;
+    }
+
+
+
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     List<Item> getAllItems() {
-
         return (List<Item>)itemRepository.findAll();
     }
 

@@ -4,6 +4,7 @@ import org.lovepacs.json.UserJson;
 import org.lovepacs.models.User;
 import org.lovepacs.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,16 @@ public class UserController {
     private UserRepository userRepository;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    User getUser(@PathVariable("id") final int id) {
+    User getUser(@PathVariable("id") final String id) {
         return userRepository.findOne(id);
+    }
+
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    User getWhoAmI(Authentication authentication) {
+
+        User user = (User) authentication.getPrincipal();
+
+        return user;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -30,7 +39,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    void disableUser(@PathVariable("id") final int id) {
+    void disableUser(@PathVariable("id") final String id) {
         User user = userRepository.findOne(id);
         if (user != null) {
             user.setEnabled(false);
@@ -39,7 +48,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}/enable", method = RequestMethod.PUT)
-    void enableUser(@PathVariable("id") final int id) {
+    void enableUser(@PathVariable("id") final String id) {
         User user = userRepository.findOne(id);
         if (user != null) {
             user.setEnabled(true);
@@ -61,7 +70,7 @@ public class UserController {
     @RequestMapping(value = "/password", method = RequestMethod.PUT)
     void updateUserPassword(@RequestBody UserJson userJson) {
 
-        User user = userRepository.findOne(userJson.getId());
+        User user = userRepository.findOne(userJson.getName());
         user.setPassword(passwordEncoder.encode(userJson.getPassword()));
 
         userRepository.save(user);
