@@ -1,5 +1,6 @@
 package org.lovepacs.controllers;
 
+import org.lovepacs.models.Box;
 import org.lovepacs.models.Item;
 import org.lovepacs.repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,14 @@ public class ItemController {
     @RequestMapping(value ="/", method = RequestMethod.GET)
     List<Item> getAllItems() {
         return (List<Item>)itemRepository.findAll();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    void deleteBox(@PathVariable("id") final int id) {
+        Item item = itemRepository.findOne(id);
+        if (item != null) {
+            item.setEnabled(false);
+            itemRepository.save(item);
+        }
     }
 }

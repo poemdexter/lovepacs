@@ -19,13 +19,22 @@ public class BoxController {
     @Autowired
     BoxRepository boxRepository;
 
-    @RequestMapping(value ="/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     Box getBox(@PathVariable("id") final int id) {
         return boxRepository.findOne(id);
     }
 
-    @RequestMapping(value ="/", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     List<Box> getAllBoxes() {
         return (List<Box>)boxRepository.findAll();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    void deleteBox(@PathVariable("id") final int id) {
+        Box box = boxRepository.findOne(id);
+        if (box != null) {
+            box.setEnabled(false);
+            boxRepository.save(box);
+        }
     }
 }
