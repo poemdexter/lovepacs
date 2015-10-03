@@ -2,7 +2,7 @@
 
 ## Information
 
-The Lovepacs app is a Spring Boot app built with Gradle.  The Gradle wrapper is used so a local installation of gradle is not necessary.  The Lovepacs app is hosted on Heroku's free dyno using a free ClearDB MySQL database.  It is recommended to install the [Heroku Toolbelt](https://toolbelt.heroku.com/) in order to view logs from Heroku.
+The Lovepacs app is a Spring Boot app built with Gradle.  The Gradle wrapper is used so a local installation of gradle is not necessary.  The Lovepacs app is hosted on Heroku's free dyno using a MySQL database hosted with the wordpress site.  It is recommended to install the [Heroku Toolbelt](https://toolbelt.heroku.com/) in order to view logs from Heroku.
 
 All development occurs on the `develop` branch.  Heroku is set up to watch the `master` branch on Github and will be trigger a build and deploy when `master` receives new code.
 
@@ -12,7 +12,7 @@ All development occurs on the `develop` branch.  Heroku is set up to watch the `
 
 The `src/main/resources/application.yml` needs to be filled with the correct info for connecting to the database.  You can view the database configuration by going to the lovepacs settings page on the Heroku Dashboard and click *Config Vars* or you can run `heroku config -s --app lovepacs` to view the current environment variables.  
 
-In the spring datasource section of `application.yml`, you'll want to replace `url`, `username`, and `password` values with those of `CLEARDB_DATABASE_URL`, `CLEARDB_DATABASE_USERNAME`, and `CLEARDB_DATABASE_PASSWORD` respectively.
+In the spring datasource section of `application.yml`, you'll want to replace `url`, `username`, and `password` values with those of `DB_URL`, `DB_USER`, and `DB_PASS` respectively.
 
 **Be careful not to commit your application.yml with the database credentials.**
 
