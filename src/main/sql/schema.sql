@@ -13,7 +13,7 @@ create table authorities (
 );
 
 create table items (
-    id tinyint(5) not null auto_increment,
+    id int not null auto_increment,
     name varchar(64) not null,
     price decimal(5,2) default 0.00,
     enabled tinyint not null default 1,
@@ -21,8 +21,18 @@ create table items (
 );
 
 create table boxes (
-    id tinyint(5) not null auto_increment,
+    id int not null auto_increment,
     name varchar(64) not null,
     enabled tinyint not null default 1,
     primary key (id)
+);
+
+create table contents (
+    id int not null auto_increment,
+    box int not null,
+    item int not null,
+    quantity int not null,
+    primary key (id),
+    constraint fk_box foreign key (box) references boxes(id),
+    constraint fk_item foreign key (item) references items(id)
 );
