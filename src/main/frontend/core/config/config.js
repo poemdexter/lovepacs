@@ -23,9 +23,65 @@ export default (appModule) => {
             })
             .state('container.location', {
                 url: '/location?id',
-                template: require('../controllers/location/location.html'),
-                controller: require('../controllers/location/location'),
+                template: require('../controllers/location/inventory.html'),
+                controller: require('../controllers/location/inventory'),
                 controllerAs: 'controller'
+            })
+            .state('container.location.create', {
+                url: '/create',
+                views:{
+                    "modal": {
+                        template: require('../controllers/location/location.html'),
+                        controller: require('../controllers/location/create'),
+                        controllerAs: 'controller'
+                    }
+                },
+                onEnter: function($state, $previousState){
+                    $previousState.memo("modalInvoker");
+
+                    // TODO: Make this a rootScope variable
+                    // TODO: Tie rootScope variable with black overlay + animation
+                    $("body").addClass("modal-open");
+
+                    // Hitting the ESC key closes the modal
+                    $(document).on('keyup', function(e){
+                        if(e.keyCode == 27){
+                            $(document).off('keyup');
+                            $previousState.go("modalInvoker");
+                        }
+                    });
+                },
+                onExit: function($state){
+                    $("body").removeClass("modal-open");
+                }
+            })
+            .state('container.location.edit', {
+                url: '/edit?id',
+                views:{
+                    "modal": {
+                        template: require('../controllers/location/location.html'),
+                        controller: require('../controllers/location/edit'),
+                        controllerAs: 'controller'
+                    }
+                },
+                onEnter: function($state, $previousState){
+                    $previousState.memo("modalInvoker");
+
+                    // TODO: Make this a rootScope variable
+                    // TODO: Tie rootScope variable with black overlay + animation
+                    $("body").addClass("modal-open");
+
+                    // Hitting the ESC key closes the modal
+                    $(document).on('keyup', function(e){
+                        if(e.keyCode == 27){
+                            $(document).off('keyup');
+                            $previousState.go("modalInvoker");
+                        }
+                    });
+                },
+                onExit: function($state){
+                    $("body").removeClass("modal-open");
+                }
             })
             .state('container.items', {
                 url: '/items',

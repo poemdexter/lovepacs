@@ -11,8 +11,20 @@ class ApiService {
         return this._$http.put('/location/', data);
     }
 
+    saveInventory(data) {
+        return this._$http.post('/location/', data);
+    }
+
     getLocation(id) {
         return this._$http.get('/location/'+id, {});
+    }
+
+    updateLocation(data) {
+        return this._$http.put('/location/', data);
+    }
+
+    createLocation(data) {
+        return this._$http.post('/location/', data);
     }
 
     getItems() {
@@ -23,7 +35,7 @@ class ApiService {
         return this._$http.get('/item/'+id, {});
     }
 
-    updateItem(id, data) {
+    updateItem(data) {
         return this._$http.put('/item/', data);
     }
 
