@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b48e30cc8d67f54a88d6"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "771a76bc3249fc0ab13f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -53794,6 +53794,31 @@
 	            onExit: ["$state", function onExit($state) {
 	                $("body").removeClass("modal-open");
 	            }]
+	        }).state('container.packs.create', {
+	            url: '/create',
+	            views: {
+	                "modal": {
+	                    template: __webpack_require__(61),
+	                    controller: __webpack_require__(63),
+	                    controllerAs: 'controller'
+	                }
+	            },
+	            onEnter: ["$state", "$previousState", function onEnter($state, $previousState) {
+	                // TODO: Make this a rootScope variable
+	                // TODO: Tie rootScope variable with black overlay + animation
+	                $("body").addClass("modal-open");
+
+	                // Hitting the ESC key closes the modal
+	                $(document).on('keyup', function (e) {
+	                    if (e.keyCode == 27) {
+	                        $(document).off('keyup');
+	                        $state.go('container.packs');
+	                    }
+	                });
+	            }],
+	            onExit: ["$state", function onExit($state) {
+	                $("body").removeClass("modal-open");
+	            }]
 	        });
 	    }]);
 	};
@@ -53914,8 +53939,8 @@
 /* 59 */
 /***/ function(module, exports) {
 
-	var v1="<div class=\"row\"> <div class=\"col-sm-12\"> <button type=\"button\" class=\"btn btn-default\" ui-sref=\"modal.pack.create\">New Pack</button> </div> </div> <div class=\"row\"> <div class=\"col-sm-12\"> <table class=\"table\"> <tr> <th>#</th> <th>Name</th> <th>Enabled</th> <th></th> </tr> <tr ng-repeat=\"pack in controller.packs\"> <td>{{pack.id}}</td> <td>{{pack.name}}</td> <td>{{pack.enabled}}</td> <td><a ui-sref=\"container.packs.pack({'id':{{pack.id}}})\"><i class=\"fa fa-pencil\"></i></a></td> </tr> </table> </div> </div> <div ui-view=\"modal\"></div>";
-	window.angular.module(["ng"]).run(["$templateCache",function(c){c.put("controllers/packs/packs.html", v1)}]);
+	var v1="<div class=\"row\"> <div class=\"col-sm-12\"> <button type=\"button\" class=\"btn btn-default\" ui-sref=\"container.packs.create\">New Pack</button> </div> </div> <div class=\"row\"> <div class=\"col-sm-12\"> <table class=\"table\"> <tr> <th>#</th> <th>Name</th> <th>Enabled</th> <th></th> </tr> <tr ng-repeat=\"pack in controller.packs\"> <td>{{pack.id}}</td> <td>{{pack.name}}</td> <td>{{pack.enabled}}</td> <td><a ui-sref=\"container.packs.pack({'id':{{pack.id}}})\"><i class=\"fa fa-pencil\"></i></a></td> </tr> </table> </div> </div> <div ui-view=\"modal\"></div>";
+	window.angular.module(["ng"]).run(["$templateCache",function(c){c.put("controllers/pack/packs.html", v1)}]);
 	module.exports=v1;
 
 /***/ },
@@ -53987,6 +54012,79 @@
 	        angular.forEach($scope.pack.contents, function (value, key) {
 	            $scope.items[value.itemId].amount = value.quantity;
 	            $scope.items[value.itemId].contentId = value.id;
+	        });
+	    });
+
+	    $scope.getTotalAmount = function () {
+	        var total = 0;
+	        angular.forEach($scope.items, function (value, key) {
+	            if ($scope.items[key].amount) total = total + parseInt($scope.items[key].amount);
+	        });
+	        return total;
+	    };
+
+	    $scope.getTotalValue = function () {
+	        var total = 0;
+	        angular.forEach($scope.items, function (value, key) {
+	            if ($scope.items[key].amount) total = total + parseInt($scope.items[key].amount) * $scope.items[key].price;
+	        });
+	        return total;
+	    };
+
+	    $scope.save = function () {
+	        $scope.pack.contents = [];
+
+	        angular.forEach($scope.items, function (value, key) {
+	            if ($scope.items[key].amount) $scope.pack.contents.push({
+	                "id": value.contentId ? value.contentId : null,
+	                "itemId": value.id,
+	                "quantity": parseInt(value.amount)
+	            });
+	        });
+
+	        ApiService.updatePack($scope.pack).then(function (data) {
+	            $state.go("container.packs", null, { reload: true });
+	        });
+	    };
+	};
+
+	PackCtrl.$inject = ['$scope', '$stateParams', '$state', '$q', 'ApiService'];
+
+	exports["default"] = PackCtrl;
+	module.exports = exports["default"];
+
+/***/ },
+/* 63 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var PackCtrl = function PackCtrl($scope, $stateParams, $state, $q, ApiService) {
+	    _classCallCheck(this, PackCtrl);
+
+	    var self = this;
+	    this._$state = $state;
+	    this._ApiService = ApiService;
+
+	    var itemsPromise = ApiService.getItems();
+
+	    $q.all([itemsPromise]).then(function (data) {
+	        $scope.pack = {
+	            "contents": [],
+	            "enabled": true,
+	            "id": null,
+	            "name": null
+	        };
+	        $scope.items = {};
+
+	        angular.forEach(data[0].data, function (value, key) {
+	            $scope.items[value.id] = value;
 	        });
 	    });
 
