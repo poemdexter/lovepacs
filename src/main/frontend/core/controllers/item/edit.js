@@ -8,7 +8,7 @@ class ItemCtrl {
     	});
 
         $scope.save = function() {
-            ApiService.updateItem($stateParams.id, $scope.item).then(function(data) {
+            ApiService.updateItem($scope.item).then(function(data) {
                 $state.go("container.items", null, { reload: true });
             });
         };

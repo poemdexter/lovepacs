@@ -5,6 +5,8 @@ class LocationCtrl {
         var locationPromise = ApiService.getLocation($stateParams.id);
         var itemsPromise =  ApiService.getItems();
 
+        $scope.locationId = $stateParams.id;
+
         $q.all([locationPromise,itemsPromise]).then(function(data) {
             $scope.location = data[0].data;
             $scope.items = {};
