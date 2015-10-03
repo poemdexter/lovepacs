@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/box")
 public class BoxController {
@@ -20,5 +22,10 @@ public class BoxController {
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
     Box getBox(@PathVariable("id") final int id) {
         return boxRepository.findOne(id);
+    }
+
+    @RequestMapping(value ="/", method = RequestMethod.GET)
+    List<Box> getAllBoxes() {
+        return (List<Box>)boxRepository.findAll();
     }
 }

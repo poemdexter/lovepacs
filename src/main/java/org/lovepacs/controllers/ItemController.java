@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/item")
 public class ItemController {
@@ -18,5 +20,10 @@ public class ItemController {
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
     Item getItem(@PathVariable("id") final int id) {
         return itemRepository.findOne(id);
+    }
+
+    @RequestMapping(value ="/", method = RequestMethod.GET)
+    List<Item> getAllItems() {
+        return (List<Item>)itemRepository.findAll();
     }
 }
