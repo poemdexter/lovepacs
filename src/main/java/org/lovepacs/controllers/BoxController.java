@@ -1,7 +1,9 @@
 package org.lovepacs.controllers;
 
+import org.lovepacs.json.BoxJson;
 import org.lovepacs.models.Box;
 import org.lovepacs.repositories.BoxRepository;
+import org.lovepacs.repositories.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,9 @@ public class BoxController {
 
     @Autowired
     BoxRepository boxRepository;
+
+    @Autowired
+    ContentRepository contentRepository;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     Box getBox(@PathVariable("id") final int id) {
@@ -44,4 +49,25 @@ public class BoxController {
             boxRepository.save(box);
         }
     }
+
+    // Create a new Box and Contents
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    void createBox(BoxJson boxJson) {
+
+
+
+    }
+
+    // Update an Existing Box
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    void updateBox(BoxJson boxJson) {
+
+
+
+    }
+
+
+
+
+
 }
