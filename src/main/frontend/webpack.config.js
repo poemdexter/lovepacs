@@ -11,7 +11,7 @@ module.exports = {
   output: {
     path: APP,
     filename: 'bundle.js',
-    publicPath: "http://localhost:5000/"
+    publicPath: "/"
   },
   devServer: {
     headers: { "Access-Control-Allow-Origin": "*" },
