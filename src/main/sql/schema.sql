@@ -1,8 +1,10 @@
 create table users (
   username varchar(32) not null,
   password varchar(60) not null,
+  location int not null,
   enabled tinyint not null default 1,
-  primary key (username)
+  primary key (username),
+  constraint fk_user_location foreign key (location) references locations(id)
 );
 
 create table authorities (
@@ -53,4 +55,16 @@ create table inventory (
   unique key uni_location_item (location, item),
   constraint fk_inv_location foreign key (location) references locations(id),
   constraint fk_inv_item foreign key (item) references items(id)
+);
+
+create table plans (
+  id int not null auto_increment,
+  location int not null,
+  box int not null,
+  quantity int not null,
+  packdate date not null,
+  enabled tinyint not null default 1,
+  primary key (id),
+  constraint fk_plan_location foreign key (location) references locations(id),
+  constraint fk_plan_box foreign key (box) references boxes(id)
 );
