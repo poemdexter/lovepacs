@@ -15,7 +15,7 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNullChange
+    @NotNull
     private String name;
 
     @NotNull
