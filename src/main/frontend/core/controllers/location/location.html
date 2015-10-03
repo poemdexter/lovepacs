@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-sm-12">
+        <h1>{{location.name}}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <h2>Inventory</h2>
+        <table class="table">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Quantity</th>
+                <th>Total Value</th>
+            </tr>
+            <tr ng-repeat="item in location.inventory">
+                <td>{{items[item.itemId].id}}</td>
+                <td>{{items[item.itemId].name}}</td>
+                <td>{{items[item.itemId].price | currency:"$"}}</td>
+                <td>{{item.quantity}}</td>
+                <td>{{items[item.itemId].price * item.quantity | currency:"$"}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div ui-view="modal"></div>

@@ -1,7 +1,7 @@
-<div class="popup-shadow" ui-sref="container.items"></div>
+<div class="popup-shadow" ui-sref="container.packs"></div>
 <div class="popup">
 	<div class="container-fluid">
-		<a class="popup-close" ui-sref="container.items">Close</a>
+		<a class="popup-close" ui-sref="container.packs">Close</a>
 		<form class="form-horizontal">
 		  <div class="form-group">
 		    <label for="inputName" class="col-sm-2 control-label">Name</label>
@@ -17,6 +17,21 @@
 		  		<th>Amount</th>
 		  		<th>Total</th>
 		  	</tr>
+		  	<tr ng-repeat="item in items">
+		  		<td>{{item.name}}</td>
+		  		<td>{{item.price | currency:"$"}}</td>
+		  		<td>
+                	<input type="text" class="form-control" placeholder="Amount" ng-model="item.amount">
+                </td>
+		  		<td>
+		  			{{(item.price*(item.amount?item.amount:0)) | currency:"$"}}
+		  		</td>
+		  	</tr>
+            <tr>
+                <th colspan="2">Total</th>
+                <th>{{getTotalAmount()}}</th>
+                <th>{{getTotalValue() | currency:"$"}}</th>
+            </tr>
 			</table>
 		  
 		  <div class="form-group">

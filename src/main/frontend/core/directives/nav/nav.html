@@ -14,11 +14,19 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a ui-sref="container.dashboard">Dashboard</a></li>
-        <li><a ui-sref="container.inventory">Inventory</a></li>
-        <li><a ui-sref="container.items">Items</a></li>
-        <li><a ui-sref="container.packs">Packs</a></li>
-        <li><a ui-sref="container.locations">Locations</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Locations <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="location in locations"><a ui-sref="container.location({'id':{{location.id}}})">{{location.name}}</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a ui-sref="container.items">Items</a></li>
+            <li><a ui-sref="container.packs">Packs</a></li>
+          </ul>
+        </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

@@ -21,6 +21,12 @@ export default (appModule) => {
                 controller: require('../controllers/dashboard/dashboard'),
                 controllerAs: 'controller'
             })
+            .state('container.location', {
+                url: '/location?id',
+                template: require('../controllers/location/location.html'),
+                controller: require('../controllers/location/location'),
+                controllerAs: 'controller'
+            })
             .state('container.items', {
                 url: '/items',
                 template: require('../controllers/items/items.html'),
