@@ -12,9 +12,11 @@ public class Inventory {
     private Integer id;
 
     @NotNull
+    @Column(name = "location")
     private Integer locationId;
 
     @NotNull
+    @Column(name = "item")
     private Integer itemId;
 
     @NotNull
