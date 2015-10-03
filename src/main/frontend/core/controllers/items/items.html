@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-sm-12">
+        <button type="button" class="btn btn-default" ui-sref="modal.item">New Item</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Enabled</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="item in items">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.enabled}}</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>
+

@@ -21,6 +21,7 @@
     "bootstrap-sass": "^3.3.5",
     "css-loader": "^0.17.0",
     "file-loader": "0.8.4",
+    "html-webpack-plugin": "^1.6.1",
     "image-webpack-loader": "^1.6.1",
     "imagemin": "^3.2.0",
     "imports-loader": "0.6.4",
@@ -32,6 +33,7 @@
     "raw-loader": "0.5.1",
     "sass-loader": "1.0.2",
     "style-loader": "^0.12.3",
+    "ui-router-extras": "0.0.14",
     "url-loader": "^0.5.6",
     "webpack": "^1.12.2",
     "webpack-dev-server": "^1.12.0"

@@ -5,12 +5,71 @@ export default (appModule) => {
 
         $urlRouterProvider.otherwise('/dashboard');
 
+        $stateProvider.state("modal", {
+            views:{
+                "modal": {
+                    template: require("../controllers/modal/modal.html")
+                }
+            },
+            onEnter: function($state){
+                // TODO: Make this a rootScope variable
+                // TODO: Tie rootScope variable with black overlay + animation
+                $("body").addClass("modal-open");
+
+                // Hitting the ESC key closes the modal
+                $(document).on('keyup', function(e){
+                    if(e.keyCode == 27){
+                        $(document).off('keyup');
+                        $state.go('templates');
+                    }
+                });
+            },
+            onExit: function($state){
+                $("body").removeClass("modal-open");
+            },
+            abstract: true
+        });
+
         $stateProvider
-            .state('dashboard', {
-                url: '/:dashboard',
+            .state('container', {
+                abstract: true,
+                sticky: true,
+                dsr: true,
+                views: {
+                    'app': {
+                        template: require('../controllers/container/container.html'),
+                        controller: require('../controllers/container/container')
+                    }
+                }
+            })
+            .state('container.dashboard', {
+                url: '/dashboard',
                 template: require('../controllers/dashboard/dashboard.html'),
                 controller: require('../controllers/dashboard/dashboard'),
                 controllerAs: 'controller'
-            });
+            })
+            .state('container.items', {
+                url: '/items',
+                template: require('../controllers/items/items.html'),
+                controller: require('../controllers/items/items'),
+                controllerAs: 'controller'
+            })
+            .state('modal.item', {
+                url: '/item',
+                parent: 'modal',
+                views:{
+                    "modal": {
+                        template: require('../controllers/item/item.html'),
+                        controller: require('../controllers/item/item'),
+                        controllerAs: 'controller'
+                    }
+                }
+            })
+            /*(.state('item', {
+                url: 'item/:itemId',
+                template: require('../controllers/item/item.html'),
+                controller: require('../controllers/item/item'),
+                controllerAs: 'controller'
+            })*/;
     }]);
 };

@@ -6,6 +6,7 @@ global.$ = global.jQuery = require('jquery');
 require('angular');
 require('angular-ui-bootstrap');
 require('bootstrap-sass');
+require('ui-router-extras');
 
 require('../styles/index.scss');
 
