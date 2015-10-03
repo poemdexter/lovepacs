@@ -1,9 +1,7 @@
 package org.lovepacs.controllers;
 
 import org.lovepacs.models.Box;
-import org.lovepacs.models.Item;
 import org.lovepacs.repositories.BoxRepository;
-import org.lovepacs.repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,10 +28,19 @@ public class BoxController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    void deleteBox(@PathVariable("id") final int id) {
+    void disableBox(@PathVariable("id") final int id) {
         Box box = boxRepository.findOne(id);
         if (box != null) {
             box.setEnabled(false);
+            boxRepository.save(box);
+        }
+    }
+
+    @RequestMapping(value = "/{id}/enable", method = RequestMethod.PUT)
+    void enableBox(@PathVariable("id") final int id) {
+        Box box = boxRepository.findOne(id);
+        if (box != null) {
+            box.setEnabled(true);
             boxRepository.save(box);
         }
     }
