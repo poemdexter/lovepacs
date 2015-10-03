@@ -34,6 +34,10 @@ public class Inventory {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getLocationId() {
         return locationId;
     }

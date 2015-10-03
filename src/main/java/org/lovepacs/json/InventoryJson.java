@@ -14,11 +14,23 @@ public class InventoryJson {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getItemId() {
         return itemId;
     }
 
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
+    }
+
     public Integer getQuantity() {
         return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }
