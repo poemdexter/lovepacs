@@ -9,6 +9,7 @@ import org.lovepacs.repositories.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,8 +23,29 @@ public class BoxController {
     ContentRepository contentRepository;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    Box getBox(@PathVariable("id") final int id) {
-        return boxRepository.findOne(id);
+    BoxJson getBox(@PathVariable("id") final int id) {
+        Box box = boxRepository.findOne(id);
+
+        BoxJson jsonBox = new BoxJson();
+        jsonBox.setId(box.getId());
+        jsonBox.setName(box.getName());
+        jsonBox.setEnabled(box.isEnabled());
+
+        List<ContentJson> jsonContents = new ArrayList<ContentJson>();
+
+        List<Content> contents = contentRepository.findAllByBoxId(id);
+
+        for(Content content : contents) {
+            ContentJson contentJson = new ContentJson();
+            contentJson.setId(content.getId());
+            contentJson.setItemId(content.getItemId());
+            contentJson.setQuantity(content.getQuantity());
+            jsonContents.add(contentJson);
+        }
+
+        jsonBox.setContents(jsonContents);
+
+        return jsonBox;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
