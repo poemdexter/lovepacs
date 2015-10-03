@@ -9,15 +9,54 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Integer id;
 
     @NotNull
     private String name;
 
-    protected User() {}
+    @NotNull
+    private String password;
 
-    public User(long id, String name) {
+    @NotNull
+    private Boolean enabled;
+
+    public User() {}
+
+    public User(Integer id, String name, String password) {
         this.id = id;
         this.name = name;
+        this.password = password;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

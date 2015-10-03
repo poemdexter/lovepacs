@@ -28,22 +28,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/resources/**");
+        web.ignoring().antMatchers("/resources/**", "/**"); //todo: remove "/**"
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
             http
-            .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-            .formLogin().permitAll();
+                .csrf().disable()
+                .authorizeRequests()
+                    .anyRequest().authenticated()
+                    .and()
+                .formLogin().permitAll();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(this.dataSource)
-                .passwordEncoder(passwordEncoder());
+                .passwordEncoder(passwordEncoder())
+                .usersByUsernameQuery("select username as principal, password as credentials, true from users where username = ? and enabled = 1");
     }
 }
