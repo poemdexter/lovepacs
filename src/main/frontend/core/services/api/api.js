@@ -23,6 +23,10 @@ class ApiService {
         return this._$http.put('/item/', data);
     }
 
+    saveItem(data) {
+        return this._$http.post('/item/', data);
+    }
+
     getPacks() {
         return this._$http.get('/box/', {});
     }

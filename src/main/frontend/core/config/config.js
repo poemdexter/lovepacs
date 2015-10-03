@@ -29,16 +29,16 @@ export default (appModule) => {
             })
             .state('container.items', {
                 url: '/items',
-                template: require('../controllers/items/items.html'),
-                controller: require('../controllers/items/items'),
+                template: require('../controllers/item/items.html'),
+                controller: require('../controllers/item/items'),
                 controllerAs: 'controller'
             })
-            .state('container.items.item', {
-                url: '/item?id',
+            .state('container.items.create', {
+                url: '/create',
                 views:{
                     "modal": {
                         template: require('../controllers/item/item.html'),
-                        controller: require('../controllers/item/item'),
+                        controller: require('../controllers/item/create'),
                         controllerAs: 'controller'
                     }
                 },
@@ -57,7 +57,33 @@ export default (appModule) => {
                 },
                 onExit: function($state){
                     $("body").removeClass("modal-open");
+                }
+            })
+            .state('container.items.item', {
+                url: '/item?id',
+                views:{
+                    "modal": {
+                        template: require('../controllers/item/item.html'),
+                        controller: require('../controllers/item/edit'),
+                        controllerAs: 'controller'
+                    }
                 },
+                onEnter: function($state, $previousState){
+                    // TODO: Make this a rootScope variable
+                    // TODO: Tie rootScope variable with black overlay + animation
+                    $("body").addClass("modal-open");
+
+                    // Hitting the ESC key closes the modal
+                    $(document).on('keyup', function(e){
+                        if(e.keyCode == 27){
+                            $(document).off('keyup');
+                            $state.go('container.items');
+                        }
+                    });
+                },
+                onExit: function($state){
+                    $("body").removeClass("modal-open");
+                }
             })
             .state('container.packs', {
                 url: '/packs',
@@ -89,7 +115,7 @@ export default (appModule) => {
                 },
                 onExit: function($state){
                     $("body").removeClass("modal-open");
-                },
+                }
             });
     }]);
 };

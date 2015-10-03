@@ -54,9 +54,9 @@ class PackCtrl {
             });
 
             ApiService.updatePack($scope.pack).then(function(data) {
-                $state.go("container.packs");
+                $state.go("container.packs", null, { reload: true });
             });
-        }
+        };
 
     }
 }

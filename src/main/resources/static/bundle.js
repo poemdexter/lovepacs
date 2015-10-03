@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "a97b248f2aef1ac1b5d1"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "b48e30cc8d67f54a88d6"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -53466,7 +53466,7 @@
 /* 44 */
 /***/ function(module, exports) {
 
-	var v1="<nav class=\"navbar navbar-default\"> <div class=\"container\">  <div class=\"navbar-header\"> <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"> <span class=\"sr-only\">Toggle navigation</span>\n<span class=\"icon-bar\"></span>\n<span class=\"icon-bar\"></span>\n<span class=\"icon-bar\"></span> </button>\n<a class=\"navbar-brand\" href=\"#\">LovePac</a> </div>  <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"> <ul class=\"nav navbar-nav\"> <li class=\"dropdown\"> <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Locations <span class=\"caret\"></span></a> <ul class=\"dropdown-menu\"> <li ng-repeat=\"location in locations\"><a ui-sref=\"container.location({'id':{{location.id}}})\">{{location.name}}</a></li> </ul> </li> <li class=\"dropdown\"> <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Settings <span class=\"caret\"></span></a> <ul class=\"dropdown-menu\"> <li><a ui-sref=\"container.items\">Items</a></li> <li><a ui-sref=\"container.packs\">Packs</a></li> </ul> </li> </ul> </div> </div> </nav>";
+	var v1="<nav class=\"navbar navbar-default\"> <div class=\"container\">  <div class=\"navbar-header\"> <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\"> <span class=\"sr-only\">Toggle navigation</span>\n<span class=\"icon-bar\"></span>\n<span class=\"icon-bar\"></span>\n<span class=\"icon-bar\"></span> </button>\n<a class=\"navbar-brand\" href=\"#\">LovePac</a> </div>  <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"> <ul class=\"nav navbar-nav\"> <li class=\"dropdown\"> <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Inventory <span class=\"caret\"></span></a> <ul class=\"dropdown-menu\"> <li ng-repeat=\"location in locations\"><a ui-sref=\"container.location({'id':{{location.id}}})\">{{location.name}}</a></li> </ul> </li> <li class=\"dropdown\"> <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Settings <span class=\"caret\"></span></a> <ul class=\"dropdown-menu\"> <li><a ui-sref=\"container.items\">Items</a></li> <li><a ui-sref=\"container.packs\">Packs</a></li> </ul> </li> </ul> </div> </div> </nav>";
 	window.angular.module(["ng"]).run(["$templateCache",function(c){c.put("directives/nav/nav.html", v1)}]);
 	module.exports=v1;
 
@@ -53529,6 +53529,11 @@
 	            return this._$http.put('/item/', data);
 	        }
 	    }, {
+	        key: 'saveItem',
+	        value: function saveItem(data) {
+	            return this._$http.post('/item/', data);
+	        }
+	    }, {
 	        key: 'getPacks',
 	        value: function getPacks() {
 	            return this._$http.get('/box/', {});
@@ -53537,6 +53542,11 @@
 	        key: 'getPack',
 	        value: function getPack(id) {
 	            return this._$http.get('/box/' + id, {});
+	        }
+	    }, {
+	        key: 'updatePack',
+	        value: function updatePack(data) {
+	            return this._$http.put('/box/', data);
 	        }
 	    }], [{
 	        key: 'templateFactory',
@@ -53641,36 +53651,23 @@
 	    value: true
 	});
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var ItemCtrl = (function () {
-	    function ItemCtrl($scope, $stateParams, $state, ApiService) {
-	        _classCallCheck(this, ItemCtrl);
+	var ItemCtrl = function ItemCtrl($scope, $stateParams, $state, ApiService) {
+	    _classCallCheck(this, ItemCtrl);
 
-	        var self = this;
-	        this._$state = $state;
-	        this._$stateParams = $stateParams;
-	        this._ApiService = ApiService;
+	    var self = this;
 
-	        ApiService.getItem($stateParams.id).then(function (data) {
-	            self.item = data.data;
+	    ApiService.getItem($stateParams.id).then(function (data) {
+	        $scope.item = data.data;
+	    });
+
+	    $scope.save = function () {
+	        ApiService.updateItem($stateParams.id, $scope.item).then(function (data) {
+	            $state.go("container.items", null, { reload: true });
 	        });
-	    }
-
-	    _createClass(ItemCtrl, [{
-	        key: 'save',
-	        value: function save() {
-	            var self = this;
-	            this._ApiService.updateItem(this._$stateParams.id, self.item).then(function (data) {
-	                self._$state.go("container.items");
-	            });
-	        }
-	    }]);
-
-	    return ItemCtrl;
-	})();
+	    };
+	};
 
 	ItemCtrl.$inject = ['$scope', '$stateParams', '$state', 'ApiService'];
 
@@ -53717,6 +53714,31 @@
 	            template: __webpack_require__(56),
 	            controller: __webpack_require__(49),
 	            controllerAs: 'controller'
+	        }).state('container.items.create', {
+	            url: '/create',
+	            views: {
+	                "modal": {
+	                    template: __webpack_require__(57),
+	                    controller: __webpack_require__(58),
+	                    controllerAs: 'controller'
+	                }
+	            },
+	            onEnter: ["$state", "$previousState", function onEnter($state, $previousState) {
+	                // TODO: Make this a rootScope variable
+	                // TODO: Tie rootScope variable with black overlay + animation
+	                $("body").addClass("modal-open");
+
+	                // Hitting the ESC key closes the modal
+	                $(document).on('keyup', function (e) {
+	                    if (e.keyCode == 27) {
+	                        $(document).off('keyup');
+	                        $state.go('container.items');
+	                    }
+	                });
+	            }],
+	            onExit: ["$state", function onExit($state) {
+	                $("body").removeClass("modal-open");
+	            }]
 	        }).state('container.items.item', {
 	            url: '/item?id',
 	            views: {
@@ -53744,15 +53766,15 @@
 	            }]
 	        }).state('container.packs', {
 	            url: '/packs',
-	            template: __webpack_require__(58),
-	            controller: __webpack_require__(59),
+	            template: __webpack_require__(59),
+	            controller: __webpack_require__(60),
 	            controllerAs: 'controller'
 	        }).state('container.packs.pack', {
 	            url: '/pack?id',
 	            views: {
 	                "modal": {
-	                    template: __webpack_require__(60),
-	                    controller: __webpack_require__(61),
+	                    template: __webpack_require__(61),
+	                    controller: __webpack_require__(62),
 	                    controllerAs: 'controller'
 	                }
 	            },
@@ -53798,7 +53820,7 @@
 /* 54 */
 /***/ function(module, exports) {
 
-	var v1="<div class=\"row\"> <div class=\"col-sm-12\"> <h1>{{location.name}}</h1> </div> </div> <div class=\"row\"> <div class=\"col-sm-12\"> <h2>Inventory</h2> <table class=\"table\"> <tr> <th>#</th> <th>Name</th> <th>Value</th> <th>Quantity</th> <th>Total Value</th> </tr> <tr ng-repeat=\"item in location.inventory\"> <td>{{items[item.itemId].id}}</td> <td>{{items[item.itemId].name}}</td> <td>{{items[item.itemId].price | currency:\"$\"}}</td> <td>{{item.quantity}}</td> <td>{{items[item.itemId].price * item.quantity | currency:\"$\"}}</td> </tr> </table> </div> </div> <div ui-view=\"modal\"></div>";
+	var v1="<div class=\"row\"> <div class=\"col-sm-12\"> <h1>{{location.name}}</h1> </div> </div> <div class=\"row\"> <div class=\"col-sm-12\"> <h2>Inventory</h2> <table class=\"table\"> <tr> <th>#</th> <th>Name</th> <th>Quantity</th> <th>Value</th> <th>Total Value</th> </tr> <tr ng-repeat=\"item in location.inventory\"> <td>{{items[item.itemId].id}}</td> <td>{{items[item.itemId].name}}</td> <td>{{item.quantity}}</td> <td>{{items[item.itemId].price | currency:\"$\"}}</td> <td>{{items[item.itemId].price * item.quantity | currency:\"$\"}}</td> </tr> </table> </div> </div> <div ui-view=\"modal\"></div>";
 	window.angular.module(["ng"]).run(["$templateCache",function(c){c.put("controllers/location/location.html", v1)}]);
 	module.exports=v1;
 
@@ -53821,7 +53843,6 @@
 
 	    ApiService.getLocation($stateParams.id).then(function (data) {
 	        $scope.location = data.data;
-	        console.log(data);
 	    });
 
 	    ApiService.getItems($stateParams.id).then(function (data) {
@@ -53829,7 +53850,6 @@
 	        angular.forEach(data.data, function (value, key) {
 	            $scope.items[value.id] = value;
 	        });
-	        console.log($scope.items);
 	    });
 	};
 
@@ -53842,15 +53862,15 @@
 /* 56 */
 /***/ function(module, exports) {
 
-	var v1="<div class=\"row\"> <div class=\"col-sm-12\"> <button type=\"button\" class=\"btn btn-default\" ui-sref=\"modal.item\">New Item</button> </div> </div> <div class=\"row\"> <div class=\"col-sm-12\"> <table class=\"table\"> <tr> <th>#</th> <th>Name</th> <th>Value</th> <th>Enabled</th> <th></th> </tr> <tr ng-repeat=\"item in controller.items\"> <td>{{item.id}}</td> <td>{{item.name}}</td> <td>{{item.price | currency:\"$\"}}</td> <td>{{item.enabled}}</td> <td><a ui-sref=\"container.items.item({'id':{{item.id}}})\"><i class=\"fa fa-eye\"></i></a></td> </tr> </table> </div> </div> <div ui-view=\"modal\"></div>";
-	window.angular.module(["ng"]).run(["$templateCache",function(c){c.put("controllers/items/items.html", v1)}]);
+	var v1="<div class=\"row\"> <div class=\"col-sm-12\"> <button type=\"button\" class=\"btn btn-default\" ui-sref=\"container.items.create\">New Item</button> </div> </div> <div class=\"row\"> <div class=\"col-sm-12\"> <table class=\"table\"> <tr> <th>#</th> <th>Name</th> <th>Value</th> <th>Enabled</th> <th></th> </tr> <tr ng-repeat=\"item in controller.items\"> <td>{{item.id}}</td> <td>{{item.name}}</td> <td>{{item.price | currency:\"$\"}}</td> <td>{{item.enabled}}</td> <td><a ui-sref=\"container.items.item({'id':{{item.id}}})\"><i class=\"fa fa-pencil\"></i></a></td> </tr> </table> </div> </div> <div ui-view=\"modal\"></div>";
+	window.angular.module(["ng"]).run(["$templateCache",function(c){c.put("controllers/item/items.html", v1)}]);
 	module.exports=v1;
 
 /***/ },
 /* 57 */
 /***/ function(module, exports) {
 
-	var v1="<div class=\"popup-shadow\" ui-sref=\"container.items\"></div> <div class=\"popup\"> <div class=\"container-fluid\"> <a class=\"popup-close\" ui-sref=\"container.items\">Close</a> <form class=\"form-horizontal\"> <div class=\"form-group\"> <label for=\"inputName\" class=\"col-sm-2 control-label\">Name</label> <div class=\"col-sm-10\"> <input type=\"text\" class=\"form-control\" id=\"inputName\" placeholder=\"Name\" ng-model=\"controller.item.name\"> </div> </div> <div class=\"form-group\"> <label for=\"inputPrice\" class=\"col-sm-2 control-label\">Value</label> <div class=\"col-sm-10\"> <div class=\"input-group\"> <div class=\"input-group-addon\">$</div> <input type=\"text\" class=\"form-control\" id=\"inputPrice\" placeholder=\"Price\" ng-model=\"controller.item.price\"> </div> </div> </div> <div class=\"form-group\"> <div class=\"col-sm-offset-2 col-sm-10\"> <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"controller.save()\">Save</button> </div> </div> </form> </div> </div>";
+	var v1="<div class=\"popup-shadow\" ui-sref=\"container.items\"></div> <div class=\"popup\"> <div class=\"container-fluid\"> <a class=\"popup-close\" ui-sref=\"container.items\">Close</a> <form class=\"form-horizontal\"> <div class=\"form-group\"> <label for=\"inputName\" class=\"col-sm-2 control-label\">Name</label> <div class=\"col-sm-10\"> <input type=\"text\" class=\"form-control\" id=\"inputName\" placeholder=\"Name\" ng-model=\"item.name\"> </div> </div> <div class=\"form-group\"> <label for=\"inputPrice\" class=\"col-sm-2 control-label\">Value</label> <div class=\"col-sm-10\"> <div class=\"input-group\"> <div class=\"input-group-addon\">$</div> <input type=\"text\" class=\"form-control\" id=\"inputPrice\" placeholder=\"Price\" ng-model=\"item.price\"> </div> </div> </div> <div class=\"form-group\"> <div class=\"col-sm-offset-2 col-sm-10\"> <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"save()\">Save</button> </div> </div> </form> </div> </div>";
 	window.angular.module(["ng"]).run(["$templateCache",function(c){c.put("controllers/item/item.html", v1)}]);
 	module.exports=v1;
 
@@ -53858,12 +53878,48 @@
 /* 58 */
 /***/ function(module, exports) {
 
-	var v1="<div class=\"row\"> <div class=\"col-sm-12\"> <button type=\"button\" class=\"btn btn-default\" ui-sref=\"modal.pack.create\">New Pack</button> </div> </div> <div class=\"row\"> <div class=\"col-sm-12\"> <table class=\"table\"> <tr> <th>#</th> <th>Name</th> <th>Value</th> <th>Enabled</th> <th></th> </tr> <tr ng-repeat=\"pack in controller.packs\"> <td>{{pack.id}}</td> <td>{{pack.name}}</td> <td>{{pack.price | currency:\"$\"}}</td> <td>{{pack.enabled}}</td> <td><a ui-sref=\"container.packs.pack({'id':{{pack.id}}})\"><i class=\"fa fa-pencil\"></i></a></td> </tr> </table> </div> </div> <div ui-view=\"modal\"></div>";
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var ItemCtrl = function ItemCtrl($scope, $stateParams, $state, ApiService) {
+	    _classCallCheck(this, ItemCtrl);
+
+	    var self = this;
+
+	    $scope.item = {
+	        "id": null,
+	        "name": null,
+	        "value": null,
+	        "enabled": true
+	    };
+
+	    $scope.save = function () {
+	        ApiService.saveItem($scope.item).then(function (data) {
+	            $state.go("container.items", null, { reload: true });
+	        });
+	    };
+	};
+
+	ItemCtrl.$inject = ['$scope', '$stateParams', '$state', 'ApiService'];
+
+	exports["default"] = ItemCtrl;
+	module.exports = exports["default"];
+
+/***/ },
+/* 59 */
+/***/ function(module, exports) {
+
+	var v1="<div class=\"row\"> <div class=\"col-sm-12\"> <button type=\"button\" class=\"btn btn-default\" ui-sref=\"modal.pack.create\">New Pack</button> </div> </div> <div class=\"row\"> <div class=\"col-sm-12\"> <table class=\"table\"> <tr> <th>#</th> <th>Name</th> <th>Enabled</th> <th></th> </tr> <tr ng-repeat=\"pack in controller.packs\"> <td>{{pack.id}}</td> <td>{{pack.name}}</td> <td>{{pack.enabled}}</td> <td><a ui-sref=\"container.packs.pack({'id':{{pack.id}}})\"><i class=\"fa fa-pencil\"></i></a></td> </tr> </table> </div> </div> <div ui-view=\"modal\"></div>";
 	window.angular.module(["ng"]).run(["$templateCache",function(c){c.put("controllers/packs/packs.html", v1)}]);
 	module.exports=v1;
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -53890,37 +53946,48 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports) {
 
-	var v1="<div class=\"popup-shadow\" ui-sref=\"container.packs\"></div> <div class=\"popup\"> <div class=\"container-fluid\"> <a class=\"popup-close\" ui-sref=\"container.packs\">Close</a> <form class=\"form-horizontal\"> <div class=\"form-group\"> <label for=\"inputName\" class=\"col-sm-2 control-label\">Name</label> <div class=\"col-sm-10\"> <input type=\"text\" class=\"form-control\" id=\"inputName\" placeholder=\"Name\" ng-model=\"controller.pack.name\"> </div> </div> <table class=\"table\"> <tr> <th>Item</th> <th>Value</th> <th>Amount</th> <th>Total</th> </tr> <tr ng-repeat=\"item in items\"> <td>{{item.name}}</td> <td>{{item.price | currency:\"$\"}}</td> <td> <input type=\"text\" class=\"form-control\" placeholder=\"Amount\" ng-model=\"item.amount\"> </td> <td> {{(item.price*(item.amount?item.amount:0)) | currency:\"$\"}} </td> </tr> <tr> <th colspan=\"2\">Total</th> <th>{{getTotalAmount()}}</th> <th>{{getTotalValue() | currency:\"$\"}}</th> </tr> </table> <div class=\"form-group\"> <div class=\"col-sm-offset-2 col-sm-10\"> <button type=\"submit\" class=\"btn btn-primary\">Save</button> </div> </div> </form> </div> </div>";
+	var v1="<div class=\"popup-shadow\" ui-sref=\"container.packs\"></div> <div class=\"popup\"> <div class=\"container-fluid\"> <a class=\"popup-close\" ui-sref=\"container.packs\">Close</a> <form class=\"form-horizontal\"> <div class=\"form-group\"> <label for=\"inputName\" class=\"col-sm-2 control-label\">Name</label> <div class=\"col-sm-10\"> <input type=\"text\" class=\"form-control\" id=\"inputName\" placeholder=\"Name\" ng-model=\"pack.name\"> </div> </div> <table class=\"table\"> <tr> <th>Item</th> <th>Amount</th> <th>Value</th> <th>Total</th> </tr> <tr ng-repeat=\"item in items\"> <td>{{item.name}}</td> <td> <input type=\"text\" class=\"form-control\" placeholder=\"Amount\" ng-model=\"item.amount\"> </td> <td>{{item.price | currency:\"$\"}}</td> <td> {{(item.price*(item.amount?item.amount:0)) | currency:\"$\"}} </td> </tr> <tr> <th colspan=\"2\">Total</th> <th>{{getTotalAmount()}}</th> <th>{{getTotalValue() | currency:\"$\"}}</th> </tr> </table> <div class=\"form-group\"> <div class=\"col-sm-offset-2 col-sm-10\"> <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"save()\">Save</button> </div> </div> </form> </div> </div>";
 	window.angular.module(["ng"]).run(["$templateCache",function(c){c.put("controllers/pack/pack.html", v1)}]);
 	module.exports=v1;
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var PackCtrl = function PackCtrl($scope, $stateParams, $state, ApiService) {
+	var PackCtrl = function PackCtrl($scope, $stateParams, $state, $q, ApiService) {
 	    _classCallCheck(this, PackCtrl);
 
 	    var self = this;
 	    this._$state = $state;
+	    this._ApiService = ApiService;
 
-	    ApiService.getPack($stateParams.id).then(function (data) {
-	        self.pack = data.data;
-	    });
+	    var packPromise = ApiService.getPack($stateParams.id);
+	    var itemsPromise = ApiService.getItems();
 
-	    ApiService.getItems().then(function (data) {
-	        $scope.items = data.data;
+	    $q.all([packPromise, itemsPromise]).then(function (data) {
+	        $scope.pack = data[0].data;
+	        console.log($scope.pack);
+	        $scope.items = {};
+
+	        angular.forEach(data[1].data, function (value, key) {
+	            $scope.items[value.id] = value;
+	        });
+
+	        angular.forEach($scope.pack.contents, function (value, key) {
+	            $scope.items[value.itemId].amount = value.quantity;
+	            $scope.items[value.itemId].contentId = value.id;
+	        });
 	    });
 
 	    $scope.getTotalAmount = function () {
@@ -53938,12 +54005,28 @@
 	        });
 	        return total;
 	    };
+
+	    $scope.save = function () {
+	        $scope.pack.contents = [];
+
+	        angular.forEach($scope.items, function (value, key) {
+	            if ($scope.items[key].amount) $scope.pack.contents.push({
+	                "id": value.contentId ? value.contentId : null,
+	                "itemId": value.id,
+	                "quantity": parseInt(value.amount)
+	            });
+	        });
+
+	        ApiService.updatePack($scope.pack).then(function (data) {
+	            $state.go("container.packs", null, { reload: true });
+	        });
+	    };
 	};
 
-	PackCtrl.$inject = ['$scope', '$stateParams', '$state', 'ApiService'];
+	PackCtrl.$inject = ['$scope', '$stateParams', '$state', '$q', 'ApiService'];
 
-	exports['default'] = PackCtrl;
-	module.exports = exports['default'];
+	exports["default"] = PackCtrl;
+	module.exports = exports["default"];
 
 /***/ }
 /******/ ]);
