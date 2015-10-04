@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserJson {
 
-    @JsonProperty private String name;
+    @JsonProperty private String username;
     @JsonProperty private String password;
     @JsonProperty private Integer location;
     @JsonProperty private Boolean enabled;
 
     public String getName() {
-        return name;
+        return username;
     }
 
     public String getPassword() { return password; }
