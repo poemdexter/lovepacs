@@ -1,4 +1,3 @@
-<#-- @ftlvariable name="_csrf" type="org.springframework.security.web.csrf.CsrfToken" -->
 <#-- @ftlvariable name="error" type="java.util.Optional<String>" -->
 <!DOCTYPE html>
 <html lang="en">
@@ -252,7 +251,6 @@
 <body>
 
 <form id="login" role="form" action="/login" method="post">
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <h1>Log In</h1>
     <fieldset id="inputs">
         <input id="username" name="username" type="text" placeholder="Username" autofocus required>
