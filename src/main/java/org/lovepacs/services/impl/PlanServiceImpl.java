@@ -86,6 +86,11 @@ public class PlanServiceImpl implements PlanService {
                     }
 
                     // update global shortage map
+                    if (globalShortageMap.containsKey(itemId)) {
+                        globalShortageMap.get(itemId).addToQuantityUsed(itemsUsed);
+                    } else {
+                        globalShortageMap.put(itemId, new Shortage(itemId, itemsUsed, inventoryLeft));
+                    }
                 }
             }
         }

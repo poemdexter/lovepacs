@@ -55,7 +55,7 @@ public class PlanController {
         Plan savedPlan = planRepository.save(plan);
         planJson.setId(savedPlan.getId());
         for(PlanBoxJson planBoxJson : planJson.getPlanBoxes()) {
-            PlanBox planBox = new PlanBox(planBoxJson.getId(), planBoxJson.getPlanId(), planBoxJson.getBoxId(), planBoxJson.getQuantity());
+            PlanBox planBox = new PlanBox(planBoxJson.getId(), savedPlan.getId(), planBoxJson.getBoxId(), planBoxJson.getQuantity());
             PlanBox savedPlanBox = planBoxRepository.save(planBox);
             planBoxJson.setId(savedPlanBox.getId());
         }
