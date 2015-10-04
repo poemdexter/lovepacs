@@ -7,9 +7,11 @@ import org.lovepacs.json.LocationJson;
 import org.lovepacs.models.Inventory;
 import org.lovepacs.models.Item;
 import org.lovepacs.models.Location;
+import org.lovepacs.models.Plan;
 import org.lovepacs.repositories.InventoryRepository;
 import org.lovepacs.repositories.ItemRepository;
 import org.lovepacs.repositories.LocationRepository;
+import org.lovepacs.repositories.PlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,9 @@ public class LocationController {
 
     @Autowired
     InventoryRepository inventoryRepository;
+
+    @Autowired
+    PlanRepository planRepository;
 
     @Autowired
     ItemRepository itemRepository;
@@ -94,6 +99,11 @@ public class LocationController {
             location.setEnabled(false);
             locationRepository.save(location);
         }
+    }
+
+    @RequestMapping(value = "/{id}/plans", method = RequestMethod.GET)
+    List<Plan> getPlansByLocationId(@PathVariable final int id) {
+        return planRepository.findAllByLocationId(id);
     }
 
     @RequestMapping(value = "/{id}/enable", method = RequestMethod.PUT)

@@ -20,8 +20,8 @@ public class PlanController {
     PlanRepository planRepository;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    List<Plan> getPlansByLocationId(@PathVariable final int id) {
-        return planRepository.findAllByLocationId(id);
+    Plan getPlanById(@PathVariable final int id) {
+        return planRepository.findOne(id);
     }
 
     @RequestMapping(value = "/", method = {RequestMethod.POST, RequestMethod.PUT})
