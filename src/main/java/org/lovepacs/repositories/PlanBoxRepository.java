@@ -8,4 +8,6 @@ import java.util.List;
 public interface PlanBoxRepository extends CrudRepository<PlanBox, Integer> {
 
     List<PlanBox> findAllByPlanId(Integer planId);
+
+    Long deleteByPlanId(Integer planId);
 }
