@@ -8,6 +8,7 @@ public class UserJson {
 
     @JsonProperty private String name;
     @JsonProperty private String password;
+    @JsonProperty private Integer location;
     @JsonProperty private Boolean enabled;
 
     public String getName() {
@@ -15,6 +16,8 @@ public class UserJson {
     }
 
     public String getPassword() { return password; }
+
+    public Integer getLocation() {return location; }
 
     public Boolean getEnabled() {
         return enabled;

@@ -23,7 +23,7 @@
                 <tr ng-repeat="item in items">
                     <td>{{item.id}}</td>
                     <td>{{item.name}}</td>
-                    <td><input type="text" class="form-control" placeholder="Amount" ng-model="item.amount"></td>
+                    <td><input type="text" class="form-control" placeholder="Amount" ng-model="item.amount" ng-disabled="user.location != locationId"></td>
                     <td>{{item.price | currency:"$"}}</td>
                     <td>{{item.price * item.amount?item.amount:0 | currency:"$"}}</td>
                 </tr>

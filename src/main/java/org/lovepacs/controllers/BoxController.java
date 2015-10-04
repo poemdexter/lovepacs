@@ -49,8 +49,28 @@ public class BoxController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    List<Box> getAllBoxes() {
-        return (List<Box>)boxRepository.findAll();
+    List<BoxJson> getAllBoxes() {
+        List<BoxJson> boxJsonList = new ArrayList<>();
+        List<Box> boxes = (List<Box>)boxRepository.findAll();
+
+        for (Box box : boxes) {
+            BoxJson jsonBox = new BoxJson();
+            jsonBox.setId(box.getId());
+            jsonBox.setName(box.getName());
+            jsonBox.setEnabled(box.isEnabled());
+            List<ContentJson> jsonContents = new ArrayList<>();
+            List<Content> contents = contentRepository.findAllByBoxId(box.getId());
+            for (Content content : contents) {
+                ContentJson contentJson = new ContentJson();
+                contentJson.setId(content.getId());
+                contentJson.setItemId(content.getItemId());
+                contentJson.setQuantity(content.getQuantity());
+                jsonContents.add(contentJson);
+            }
+            jsonBox.setContents(jsonContents);
+            boxJsonList.add(jsonBox);
+        }
+        return boxJsonList;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

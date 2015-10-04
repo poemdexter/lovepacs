@@ -9,6 +9,10 @@ class ContainerCtrl {
 		ApiService.getLocations().then(function(data) {
     		$scope.locations = data.data;
     	});
+
+    	ApiService.getUser().then(function(data) {
+    		$rootScope.user = data.data;
+    	});
     }
 }
 
