@@ -63,7 +63,10 @@ public class UserController {
             throw new UserNotFoundException();
         }
 
-        user.setPassword(passwordEncoder.encode(userJson.getPassword()));
+        if (userJson.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userJson.getPassword()));
+        }
+
         user.setEnabled(userJson.getEnabled());
         user.setLocation(userJson.getLocation());
 
