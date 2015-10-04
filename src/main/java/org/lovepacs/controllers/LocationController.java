@@ -142,22 +142,14 @@ public class LocationController {
     }
 
     private void updateInventoryItems(Integer locationId, List<InventoryJson> inventoryItems) {
-        List<Inventory> currentInventory = inventoryRepository.findAllByLocationId(locationId);
         for(InventoryJson inventoryItem : inventoryItems) {
-            if(inventoryItem.getId() == null) {
-                // New item
-                Inventory myInventory = new Inventory();
-                myInventory.setItemId(inventoryItem.getItemId());
-                myInventory.setQuantity(inventoryItem.getQuantity());
-                myInventory.setLocationId(locationId);
-                myInventory = inventoryRepository.save(myInventory);
-                inventoryItem.setId(myInventory.getId());
-            } else {
-                // Update to an item
-                Inventory myInventory = inventoryRepository.findOne(inventoryItem.getId());
-                myInventory.setQuantity(inventoryItem.getQuantity());
-                inventoryRepository.save(myInventory);
-            }
+            Inventory myInventory = new Inventory();
+            myInventory.setId(inventoryItem.getId());
+            myInventory.setItemId(inventoryItem.getItemId());
+            myInventory.setQuantity(inventoryItem.getQuantity());
+            myInventory.setLocationId(locationId);
+            myInventory = inventoryRepository.save(myInventory);
+            inventoryItem.setId(myInventory.getId());
         }
     }
 }
