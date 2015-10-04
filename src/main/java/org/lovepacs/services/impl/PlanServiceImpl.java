@@ -40,10 +40,11 @@ public class PlanServiceImpl implements PlanService {
     ItemRepository itemRepository;
 
     @Override
-    public void removePlanItemsFromInventory(PlanJson plan) {
-        for (PlanBoxJson planBoxJson : plan.getPlanBoxes()) {
-            int boxesCreated = planBoxJson.getQuantity();
-            List<Map<String, Object>> results = jdbcTemplate.queryForList(ITEM_USAGE_SQL, planBoxJson.getBoxId(), plan.getLocation());
+    public void removePlanItemsFromInventory(Plan plan) {
+        List<PlanBox> planBoxes = planBoxRepository.findAllByPlanId(plan.getId());
+        for (PlanBox planBox : planBoxes) {
+            int boxesCreated = planBox.getQuantity();
+            List<Map<String, Object>> results = jdbcTemplate.queryForList(ITEM_USAGE_SQL, planBox.getBoxId(), plan.getLocationId());
             for(Map<String, Object> result : results) {
                 Integer itemId = (Integer) result.get("item");
                 Integer itemPerBox = (Integer) result.get("used_per_box");
@@ -52,7 +53,7 @@ public class PlanServiceImpl implements PlanService {
                 int itemsUsed = itemPerBox * boxesCreated;
                 int newInventory = inventoryLeft - itemsUsed;
 
-                inventoryRepository.save(new Inventory(plan.getLocation(), itemId, newInventory));
+                inventoryRepository.save(new Inventory(plan.getLocationId(), itemId, newInventory));
             }
         }
     }

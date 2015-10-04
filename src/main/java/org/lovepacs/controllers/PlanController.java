@@ -66,13 +66,12 @@ public class PlanController {
         return planJson;
     }
 
-    // todo don't need planJson
     @RequestMapping(value = "/{id}/complete", method = RequestMethod.POST)
-    void completePlan(@PathVariable("id") final int id, @RequestBody PlanJson planJson) {
-        Plan plan = new Plan(planJson.getId(), planJson.getLocation(), planJson.getPackDate());
+    void completePlan(@PathVariable("id") final int id) {
+        Plan plan = planRepository.findOne(id);
         plan.setEnabled(false);
-        planRepository.save(plan);
-        planService.removePlanItemsFromInventory(planJson);
+        plan = planRepository.save(plan);
+        planService.removePlanItemsFromInventory(plan);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
