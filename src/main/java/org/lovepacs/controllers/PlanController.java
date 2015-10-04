@@ -51,8 +51,9 @@ public class PlanController {
 
     @RequestMapping(value = "/", method = {RequestMethod.POST, RequestMethod.PUT})
     PlanJson createUpdatePlan(@RequestBody PlanJson planJson) {
-        Plan plan = new Plan(planJson.getId(), planJson.getLocation(), planJson.getPackDate());
+        Plan plan = new Plan(planJson.getId(), planJson.getLocation(), planJson.getPackDate(), planJson.getEnabled());
         Plan savedPlan = planRepository.save(plan);
+        System.out.println("saved");
         planJson.setId(savedPlan.getId());
         for(PlanBoxJson planBoxJson : planJson.getPlanBoxes()) {
             PlanBox planBox = new PlanBox(planBoxJson.getId(), savedPlan.getId(), planBoxJson.getBoxId(), planBoxJson.getQuantity());

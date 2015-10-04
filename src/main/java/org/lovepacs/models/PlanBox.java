@@ -1,6 +1,7 @@
 package org.lovepacs.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "plan_boxes")
@@ -10,12 +11,15 @@ public class PlanBox {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull
     @Column(name = "plan")
     private Integer planId;
 
+    @NotNull
     @Column(name = "box")
     private Integer boxId;
 
+    @NotNull
     private Integer quantity;
 
     public PlanBox() {}

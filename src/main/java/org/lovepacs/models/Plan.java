@@ -31,6 +31,13 @@ public class Plan {
         this.packDate = packDate;
     }
 
+    public Plan(Integer id, Integer locationId, Date packDate, Boolean enabled) {
+        this.id = id;
+        this.locationId = locationId;
+        this.packDate = packDate;
+        this.enabled = enabled;
+    }
+
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
