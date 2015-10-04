@@ -1,5 +1,6 @@
 package org.lovepacs.services.impl;
 
+import org.lovepacs.json.ShortageJson;
 import org.lovepacs.models.Inventory;
 import org.lovepacs.models.Plan;
 import org.lovepacs.repositories.InventoryRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +41,8 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public void getPlanShortages(Plan plan) {
+    public List<ShortageJson> getPlanShortages(Plan plan) {
+        List<ShortageJson> shortages = new ArrayList<>();
 
         int boxesCreated = plan.getQuantity();
         List<Map<String, Object>> results = jdbcTemplate.queryForList(removeItemsSQL, plan.getBoxId(), plan.getLocationId());
@@ -51,7 +54,11 @@ public class PlanServiceImpl implements PlanService {
             int itemsUsed = itemPerBox * boxesCreated;
             int newInventory = inventoryLeft - itemsUsed;
 
-            inventoryRepository.save(new Inventory(plan.getLocationId(), itemId, newInventory));
+            if (newInventory < 0) {
+                // todo shortage!
+            }
         }
+
+        return shortages;
     }
 }

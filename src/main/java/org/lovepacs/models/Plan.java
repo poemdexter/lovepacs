@@ -36,6 +36,8 @@ public class Plan {
         this.enabled = enabled;
     }
 
+    public Integer getId() { return id; }
+
     public Integer getBoxId() {
         return boxId;
     }

@@ -1,5 +1,6 @@
 package org.lovepacs.controllers;
 
+import org.lovepacs.json.ShortageJson;
 import org.lovepacs.models.Plan;
 import org.lovepacs.repositories.PlanRepository;
 import org.lovepacs.services.PlanService;
@@ -46,7 +47,7 @@ public class PlanController {
     }
 
     @RequestMapping(value = "/{id}/shortages", method = RequestMethod.GET)
-    void getShortages(@PathVariable("id") final int id) {
-        planService.getPlanShortages(planRepository.findOne(id));
+    List<ShortageJson> getShortages(@PathVariable("id") final int id) {
+        return planService.getPlanShortages(planRepository.findOne(id));
     }
 }
