@@ -2,13 +2,10 @@ package org.lovepacs.services.impl;
 
 import org.lovepacs.json.PlanBoxJson;
 import org.lovepacs.json.PlanJson;
-import org.lovepacs.json.ShortageJson;
-import org.lovepacs.models.Inventory;
-import org.lovepacs.models.Plan;
-import org.lovepacs.models.PlanBox;
-import org.lovepacs.repositories.InventoryRepository;
-import org.lovepacs.repositories.PlanBoxRepository;
-import org.lovepacs.repositories.PlanRepository;
+import org.lovepacs.json.ShortageItemJson;
+import org.lovepacs.json.ShortageLocationJson;
+import org.lovepacs.models.*;
+import org.lovepacs.repositories.*;
 import org.lovepacs.services.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,7 +19,7 @@ import java.util.Map;
 @Service
 public class PlanServiceImpl implements PlanService {
 
-    private String removeItemsSQL = "select c.item, c.quantity as created, i.quantity as inventory from contents c, inventory i where i.item = c.item and c.box = ? and i.location = ?";
+    private static final String ITEM_USAGE_SQL = "select c.item, c.quantity as used_per_box, i.quantity as inventory from contents c, inventory i where i.item = c.item and c.box = ? and i.location = ?";
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -36,15 +33,21 @@ public class PlanServiceImpl implements PlanService {
     @Autowired
     PlanRepository planRepository;
 
+    @Autowired
+    LocationRepository locationRepository;
+
+    @Autowired
+    ItemRepository itemRepository;
+
     @Override
     public void removePlanItemsFromInventory(PlanJson plan) {
         for (PlanBoxJson planBoxJson : plan.getPlanBoxes()) {
             int boxesCreated = planBoxJson.getQuantity();
-            List<Map<String, Object>> results = jdbcTemplate.queryForList(removeItemsSQL, planBoxJson.getBoxId(), plan.getLocation());
+            List<Map<String, Object>> results = jdbcTemplate.queryForList(ITEM_USAGE_SQL, planBoxJson.getBoxId(), plan.getLocation());
             for(Map<String, Object> result : results) {
                 Integer itemId = (Integer) result.get("item");
-                Integer itemPerBox = (Integer) result.get("per_box");
-                Integer inventoryLeft = (Integer) result.get("inventory_left");
+                Integer itemPerBox = (Integer) result.get("used_per_box");
+                Integer inventoryLeft = (Integer) result.get("inventory");
 
                 int itemsUsed = itemPerBox * boxesCreated;
                 int newInventory = inventoryLeft - itemsUsed;
@@ -55,47 +58,65 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<ShortageJson> getPlanShortagesByLocation(Integer locationId) {
-        List<ShortageJson> shortages = new ArrayList<>();
-        List<Plan> plans = planRepository.findAllByLocationIdOrderByPackDateDesc(locationId);
-        Map<Integer, Shortage> globalShortageMap = new HashMap<>();
-        // start with first plan (soonest) and go further away
-        for (Plan plan : plans) {
+    public List<ShortageLocationJson> getAllLocationShortagesForWebsite() {
+        List<ShortageLocationJson> shortages = new ArrayList<>();
 
-            List<PlanBox> planBoxes = planBoxRepository.findAllByPlanId(plan.getId());
-            Map<Integer, Shortage> planShortageMap = new HashMap<>();
+        List<Location> locations = locationRepository.findLocationByEnabled(true);
 
-            for (PlanBox planBox : planBoxes) {
+        // for each location, get all plans...
+        for (Location location : locations) {
 
-                int boxesCreated = planBox.getQuantity();
-                List<Map<String, Object>> results = jdbcTemplate.queryForList(removeItemsSQL, planBox.getBoxId(), plan.getLocationId());
+            List<Plan> plans = planRepository.findAllByLocationIdOrderByPackDateDesc(location.getId());
+            Map<Integer, Shortage> locationShortageMap = new HashMap<>();
 
-                for (Map<String, Object> result : results) {
+            // for each plan, get all plan boxes...
+            for (Plan plan : plans) {
 
-                    Integer itemId = (Integer) result.get("item");
-                    Integer itemPerBox = (Integer) result.get("per_box");
-                    Integer inventoryLeft = (Integer) result.get("inventory_left");
+                List<PlanBox> planBoxes = planBoxRepository.findAllByPlanId(plan.getId());
 
-                    int itemsUsed = itemPerBox * boxesCreated;
+                // for each planBox, get total used items and add to map
+                for (PlanBox planBox : planBoxes) {
 
-                    // update plan shortage map
-                    if (planShortageMap.containsKey(itemId)) {
-                        planShortageMap.get(itemId).addToQuantityUsed(itemsUsed);
-                    } else {
-                        planShortageMap.put(itemId, new Shortage(itemId, itemsUsed, inventoryLeft));
-                    }
+                    int boxesCreated = planBox.getQuantity();
+                    List<Map<String, Object>> results = jdbcTemplate.queryForList(ITEM_USAGE_SQL, planBox.getBoxId(), location.getId());
 
-                    // update global shortage map
-                    if (globalShortageMap.containsKey(itemId)) {
-                        globalShortageMap.get(itemId).addToQuantityUsed(itemsUsed);
-                    } else {
-                        globalShortageMap.put(itemId, new Shortage(itemId, itemsUsed, inventoryLeft));
+                    for (Map<String, Object> result : results) {
+
+                        Integer itemId = (Integer) result.get("item");
+                        Integer itemPerBox = (Integer) result.get("used_per_box");
+                        Integer inventoryLeft = (Integer) result.get("inventory");
+
+                        int itemsUsed = itemPerBox * boxesCreated;
+
+                        // update location shortage map
+                        if (locationShortageMap.containsKey(itemId)) {
+                            locationShortageMap.get(itemId).addToQuantityUsed(itemsUsed);
+                        } else {
+                            locationShortageMap.put(itemId, new Shortage(itemId, itemsUsed, inventoryLeft));
+                        }
                     }
                 }
             }
-        }
 
-        // todo check shortage map
+            // go through shortage map and calculate any item shortages
+            List<ShortageItemJson> shortageItemJsonList = new ArrayList<>();
+            for (Map.Entry<Integer,Shortage> entry : locationShortageMap.entrySet()) {
+                Integer itemId = entry.getKey();
+                Shortage shortage = entry.getValue();
+
+                if (shortage.getQuantityUsed() > shortage.getInventoryAmount()) {
+                    Item item = itemRepository.findOne(itemId);
+                    ShortageItemJson shortageItemJson = new ShortageItemJson(item.getName(), shortage.getQuantityUsed() - shortage.getInventoryAmount());
+                    shortageItemJsonList.add(shortageItemJson);
+                }
+            }
+
+            // if we have shortages, create a new locationShortage and add to list
+            if (shortageItemJsonList.size() > 0) {
+                ShortageLocationJson shortage = new ShortageLocationJson(location.getName(), shortageItemJsonList);
+                shortages.add(shortage);
+            }
+        }
 
         return shortages;
     }

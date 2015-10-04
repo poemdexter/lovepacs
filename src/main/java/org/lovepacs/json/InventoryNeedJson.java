@@ -10,9 +10,9 @@ import java.util.List;
 public class InventoryNeedJson {
 
     @JsonProperty private String name;
-    @JsonProperty private List<ShortageJson> items;
+    @JsonProperty private List<ShortageLocationJson> items;
 
-    public void setItems(List<ShortageJson> items) {
+    public void setItems(List<ShortageLocationJson> items) {
         this.items = items;
     }
 

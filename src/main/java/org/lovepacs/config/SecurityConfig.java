@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/resources/**", "/location/inventory/");
+        web.ignoring().antMatchers("/resources/**", "/plan/shortages");
     }
 
     @Override

@@ -11,4 +11,9 @@ package org.lovepacs.repositories;
 import org.lovepacs.models.Location;
 import org.springframework.data.repository.CrudRepository;
 
-public interface LocationRepository extends CrudRepository<Location, Integer> {}
+import java.util.List;
+
+public interface LocationRepository extends CrudRepository<Location, Integer> {
+
+    List<Location> findLocationByEnabled(Boolean enabled);
+}

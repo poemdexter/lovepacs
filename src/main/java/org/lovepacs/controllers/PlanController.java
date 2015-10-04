@@ -2,7 +2,7 @@ package org.lovepacs.controllers;
 
 import org.lovepacs.json.PlanBoxJson;
 import org.lovepacs.json.PlanJson;
-import org.lovepacs.json.ShortageJson;
+import org.lovepacs.json.ShortageLocationJson;
 import org.lovepacs.models.Plan;
 import org.lovepacs.models.PlanBox;
 import org.lovepacs.repositories.PlanBoxRepository;
@@ -53,7 +53,6 @@ public class PlanController {
     PlanJson createUpdatePlan(@RequestBody PlanJson planJson) {
         Plan plan = new Plan(planJson.getId(), planJson.getLocation(), planJson.getPackDate(), planJson.getEnabled());
         Plan savedPlan = planRepository.save(plan);
-        System.out.println("saved");
         planJson.setId(savedPlan.getId());
         for(PlanBoxJson planBoxJson : planJson.getPlanBoxes()) {
             PlanBox planBox = new PlanBox(planBoxJson.getId(), savedPlan.getId(), planBoxJson.getBoxId(), planBoxJson.getQuantity());
@@ -63,6 +62,7 @@ public class PlanController {
         return planJson;
     }
 
+    // todo don't need planJson
     @RequestMapping(value = "/{id}/complete", method = RequestMethod.POST)
     void completePlan(@PathVariable("id") final int id, @RequestBody PlanJson planJson) {
         Plan plan = new Plan(planJson.getId(), planJson.getLocation(), planJson.getPackDate());
@@ -78,5 +78,10 @@ public class PlanController {
             plan.setEnabled(false);
             planRepository.save(plan);
         }
+    }
+
+    @RequestMapping(value = "/shortages", method = RequestMethod.GET)
+    List<ShortageLocationJson> getAllShortages() {
+        return planService.getAllLocationShortagesForWebsite();
     }
 }
