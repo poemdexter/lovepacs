@@ -121,6 +121,56 @@ public class PlanServiceImpl implements PlanService {
         return shortages;
     }
 
+    public ShortageLocationJson getLocationShortagesForWebsite(Integer locationId) {
+        Location location = locationRepository.findOne(locationId);
+        List<Plan> plans = planRepository.findAllByLocationIdOrderByPackDateDesc(location.getId());
+        Map<Integer, Shortage> locationShortageMap = new HashMap<>();
+
+        // for each plan, get all plan boxes...
+        for (Plan plan : plans) {
+
+            List<PlanBox> planBoxes = planBoxRepository.findAllByPlanId(plan.getId());
+
+            // for each planBox, get total used items and add to map
+            for (PlanBox planBox : planBoxes) {
+
+                int boxesCreated = planBox.getQuantity();
+                List<Map<String, Object>> results = jdbcTemplate.queryForList(ITEM_USAGE_SQL, planBox.getBoxId(), location.getId());
+
+                for (Map<String, Object> result : results) {
+
+                    Integer itemId = (Integer) result.get("item");
+                    Integer itemPerBox = (Integer) result.get("used_per_box");
+                    Integer inventoryLeft = (Integer) result.get("inventory");
+
+                    int itemsUsed = itemPerBox * boxesCreated;
+
+                    // update location shortage map
+                    if (locationShortageMap.containsKey(itemId)) {
+                        locationShortageMap.get(itemId).addToQuantityUsed(itemsUsed);
+                    } else {
+                        locationShortageMap.put(itemId, new Shortage(itemId, itemsUsed, inventoryLeft));
+                    }
+                }
+            }
+        }
+
+        // go through shortage map and calculate any item shortages
+        List<ShortageItemJson> shortageItemJsonList = new ArrayList<>();
+        for (Map.Entry<Integer,Shortage> entry : locationShortageMap.entrySet()) {
+            Integer itemId = entry.getKey();
+            Shortage shortage = entry.getValue();
+
+            if (shortage.getQuantityUsed() > shortage.getInventoryAmount()) {
+                Item item = itemRepository.findOne(itemId);
+                ShortageItemJson shortageItemJson = new ShortageItemJson(item.getName(), shortage.getQuantityUsed() - shortage.getInventoryAmount());
+                shortageItemJsonList.add(shortageItemJson);
+            }
+        }
+
+        return new ShortageLocationJson(location.getName(), shortageItemJsonList);
+    }
+
     private class Shortage {
         private Integer itemId;
         private Integer quantityUsed;

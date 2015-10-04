@@ -26,6 +26,9 @@ public class LocationController {
     @Autowired
     PlanBoxRepository planBoxRepository;
 
+    @Autowired
+    PlanService planService;
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     LocationJson getLocation(@PathVariable("id") final int id) {
 
@@ -104,6 +107,11 @@ public class LocationController {
             location.setEnabled(true);
             locationRepository.save(location);
         }
+    }
+
+    @RequestMapping(value = "{id}/shortages", method = RequestMethod.GET)
+    ShortageLocationJson getShortages(@PathVariable("id") final int id) {
+        return planService.getLocationShortagesForWebsite(id);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)

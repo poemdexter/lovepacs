@@ -10,4 +10,6 @@ public interface PlanService {
     void removePlanItemsFromInventory(PlanJson plan);
 
     List<ShortageLocationJson> getAllLocationShortagesForWebsite();
+
+    ShortageLocationJson getLocationShortagesForWebsite(Integer locationId);
 }
