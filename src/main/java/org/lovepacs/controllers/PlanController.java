@@ -6,6 +6,8 @@ import org.lovepacs.services.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/plan")
 public class PlanController {
@@ -15,6 +17,11 @@ public class PlanController {
 
     @Autowired
     PlanRepository planRepository;
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    List<Plan> getPlansByLocationId(@PathVariable final int id) {
+        return planRepository.findAllByLocationId(id);
+    }
 
     @RequestMapping(value = "/", method = {RequestMethod.POST, RequestMethod.PUT})
     Plan createUpdatePlan(@RequestBody Plan plan) {
@@ -37,4 +44,6 @@ public class PlanController {
             planRepository.save(plan);
         }
     }
+
+
 }
