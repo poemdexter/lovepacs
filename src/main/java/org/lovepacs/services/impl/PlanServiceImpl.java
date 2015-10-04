@@ -53,7 +53,7 @@ public class PlanServiceImpl implements PlanService {
                 int itemsUsed = itemPerBox * boxesCreated;
                 int newInventory = inventoryLeft - itemsUsed;
 
-                inventoryRepository.save(new Inventory(plan.getLocationId(), itemId, newInventory));
+                inventoryRepository.updateInventoryQuantities(plan.getLocationId(), itemId, newInventory);
             }
         }
     }
