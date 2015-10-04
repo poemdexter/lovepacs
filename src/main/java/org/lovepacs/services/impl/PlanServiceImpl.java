@@ -19,7 +19,7 @@ import java.util.Map;
 @Service
 public class PlanServiceImpl implements PlanService {
 
-    private static final String ITEM_USAGE_SQL = "select c.item, c.quantity as created, i.quantity as inventory from contents c, inventory i where i.item = c.item and c.box = ? and i.location = ?";
+    private static final String ITEM_USAGE_SQL = "select c.item, c.quantity as used_per_box, i.quantity as inventory from contents c, inventory i where i.item = c.item and c.box = ? and i.location = ?";
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -46,8 +46,8 @@ public class PlanServiceImpl implements PlanService {
             List<Map<String, Object>> results = jdbcTemplate.queryForList(ITEM_USAGE_SQL, planBoxJson.getBoxId(), plan.getLocation());
             for(Map<String, Object> result : results) {
                 Integer itemId = (Integer) result.get("item");
-                Integer itemPerBox = (Integer) result.get("per_box");
-                Integer inventoryLeft = (Integer) result.get("inventory_left");
+                Integer itemPerBox = (Integer) result.get("used_per_box");
+                Integer inventoryLeft = (Integer) result.get("inventory");
 
                 int itemsUsed = itemPerBox * boxesCreated;
                 int newInventory = inventoryLeft - itemsUsed;
@@ -78,13 +78,13 @@ public class PlanServiceImpl implements PlanService {
                 for (PlanBox planBox : planBoxes) {
 
                     int boxesCreated = planBox.getQuantity();
-                    List<Map<String, Object>> results = jdbcTemplate.queryForList(ITEM_USAGE_SQL, planBox.getBoxId(), plan.getLocationId());
+                    List<Map<String, Object>> results = jdbcTemplate.queryForList(ITEM_USAGE_SQL, planBox.getBoxId(), location.getId());
 
                     for (Map<String, Object> result : results) {
 
                         Integer itemId = (Integer) result.get("item");
-                        Integer itemPerBox = (Integer) result.get("per_box");
-                        Integer inventoryLeft = (Integer) result.get("inventory_left");
+                        Integer itemPerBox = (Integer) result.get("used_per_box");
+                        Integer inventoryLeft = (Integer) result.get("inventory");
 
                         int itemsUsed = itemPerBox * boxesCreated;
 
