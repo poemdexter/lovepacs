@@ -7,10 +7,10 @@ import org.lovepacs.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -73,9 +73,10 @@ public class UserController {
         userRepository.save(user);
     }
 
-    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such username")
-    @ExceptionHandler(UsernameNotFoundException.class)
-    void notFoundHandler() {
-
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseBody
+    String notFoundHandler(HttpServletResponse response) {
+        response.setStatus(HttpStatus.NOT_FOUND.value());
+        return "{\"message\": \"Username not found\"}";
     }
 }
