@@ -59,7 +59,7 @@ class BrandCtrl {
 
 			            angular.forEach(items, function(item) {
 			              plan.items.push(angular.copy(item));
-			              if (item.surplus < 0)
+			              if (item.surplus < 0 && item.enabled)
 			              	plan.minus = true;
 			            });
 		            });
