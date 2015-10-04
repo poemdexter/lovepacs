@@ -21,13 +21,71 @@ export default (appModule) => {
                 controller: require('../controllers/dashboard/dashboard'),
                 controllerAs: 'controller'
             })
-            .state('container.location', {
-                url: '/location?id',
+            .state('container.dashboard.plan', {
+                url: '/plan?id',
+                views:{
+                    "modal": {
+                        template: require('../controllers/dashboard/plan.html'),
+                        controller: require('../controllers/dashboard/edit'),
+                        controllerAs: 'controller'
+                    }
+                },
+                onEnter: function($state, $previousState){
+                    // TODO: Make this a rootScope variable
+                    // TODO: Tie rootScope variable with black overlay + animation
+                    $("body").addClass("modal-open");
+
+                    // Hitting the ESC key closes the modal
+                    $(document).on('keyup', function(e){
+                        if(e.keyCode == 27){
+                            $(document).off('keyup');
+                            $state.go('container.dashboard');
+                        }
+                    });
+                },
+                onExit: function($state){
+                    $("body").removeClass("modal-open");
+                }
+            })
+            .state('container.dashboard.create', {
+                url: '/create',
+                views:{
+                    "modal": {
+                        template: require('../controllers/dashboard/plan.html'),
+                        controller: require('../controllers/dashboard/create'),
+                        controllerAs: 'controller'
+                    }
+                },
+                onEnter: function($state, $previousState){
+                    // TODO: Make this a rootScope variable
+                    // TODO: Tie rootScope variable with black overlay + animation
+                    $("body").addClass("modal-open");
+
+                    // Hitting the ESC key closes the modal
+                    $(document).on('keyup', function(e){
+                        if(e.keyCode == 27){
+                            $(document).off('keyup');
+                            $state.go('container.dashboard');
+                        }
+                    });
+                },
+                onExit: function($state){
+                    $("body").removeClass("modal-open");
+                }
+            })
+            .state('container.locations', {
+                url: '/locations',
+                template: require('../controllers/location/locations.html'),
+                controller: require('../controllers/location/locations'),
+                controllerAs: 'controller'
+            })
+            .state('container.inventory', {
+                url: '/inventory?id',
                 template: require('../controllers/location/inventory.html'),
                 controller: require('../controllers/location/inventory'),
                 controllerAs: 'controller'
             })
-            .state('container.location.create', {
+            .state('container.locations.create', {
                 url: '/create',
                 views:{
                     "modal": {
@@ -37,8 +95,6 @@ export default (appModule) => {
                     }
                 },
                 onEnter: function($state, $previousState){
-                    $previousState.memo("modalInvoker");
-
                     // TODO: Make this a rootScope variable
                     // TODO: Tie rootScope variable with black overlay + animation
                     $("body").addClass("modal-open");
@@ -47,7 +103,7 @@ export default (appModule) => {
                     $(document).on('keyup', function(e){
                         if(e.keyCode == 27){
                             $(document).off('keyup');
-                            $previousState.go("modalInvoker");
+                            $state.go('container.locations');
                         }
                     });
                 },
@@ -55,8 +111,8 @@ export default (appModule) => {
                     $("body").removeClass("modal-open");
                 }
             })
-            .state('container.location.edit', {
-                url: '/edit?id',
+            .state('container.locations.location', {
+                url: '/location?id',
                 views:{
                     "modal": {
                         template: require('../controllers/location/location.html'),
@@ -65,8 +121,6 @@ export default (appModule) => {
                     }
                 },
                 onEnter: function($state, $previousState){
-                    $previousState.memo("modalInvoker");
-
                     // TODO: Make this a rootScope variable
                     // TODO: Tie rootScope variable with black overlay + animation
                     $("body").addClass("modal-open");
@@ -75,7 +129,7 @@ export default (appModule) => {
                     $(document).on('keyup', function(e){
                         if(e.keyCode == 27){
                             $(document).off('keyup');
-                            $previousState.go("modalInvoker");
+                            $state.go('container.locations');
                         }
                     });
                 },
@@ -192,6 +246,64 @@ export default (appModule) => {
                         if(e.keyCode == 27){
                             $(document).off('keyup');
                             $state.go('container.packs');
+                        }
+                    });
+                },
+                onExit: function($state){
+                    $("body").removeClass("modal-open");
+                }
+            })
+            .state('container.users', {
+                url: '/users',
+                template: require('../controllers/user/users.html'),
+                controller: require('../controllers/user/users'),
+                controllerAs: 'controller'
+            })
+            .state('container.users.user', {
+                url: '/user?id',
+                views:{
+                    "modal": {
+                        template: require('../controllers/user/user.html'),
+                        controller: require('../controllers/user/edit'),
+                        controllerAs: 'controller'
+                    }
+                },
+                onEnter: function($state, $previousState){
+                    // TODO: Make this a rootScope variable
+                    // TODO: Tie rootScope variable with black overlay + animation
+                    $("body").addClass("modal-open");
+
+                    // Hitting the ESC key closes the modal
+                    $(document).on('keyup', function(e){
+                        if(e.keyCode == 27){
+                            $(document).off('keyup');
+                            $state.go('container.users');
+                        }
+                    });
+                },
+                onExit: function($state){
+                    $("body").removeClass("modal-open");
+                }
+            })
+            .state('container.users.create', {
+                url: '/create',
+                views:{
+                    "modal": {
+                        template: require('../controllers/user/user.html'),
+                        controller: require('../controllers/user/create'),
+                        controllerAs: 'controller'
+                    }
+                },
+                onEnter: function($state, $previousState){
+                    // TODO: Make this a rootScope variable
+                    // TODO: Tie rootScope variable with black overlay + animation
+                    $("body").addClass("modal-open");
+
+                    // Hitting the ESC key closes the modal
+                    $(document).on('keyup', function(e){
+                        if(e.keyCode == 27){
+                            $(document).off('keyup');
+                            $state.go('container.users');
                         }
                     });
                 },

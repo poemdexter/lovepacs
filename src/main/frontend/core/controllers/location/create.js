@@ -2,6 +2,7 @@ class LocationCtrl {
 
     constructor($scope, $stateParams, $state, $q, ApiService){
     	var self = this;
+        $scope.title = "Create Location";
 
         $scope.location = {
             "enabled": true,
@@ -12,7 +13,7 @@ class LocationCtrl {
 
         $scope.save = function() {
             ApiService.createLocation($scope.location).then(function(data) {
-                $state.go("container.location", {'id':data.data.id}, { reload: true });
+                $state.go("container.locations", {'id':data.data.id}, { reload: true });
             });
         };
     }

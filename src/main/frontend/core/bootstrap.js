@@ -8,6 +8,7 @@ require('angular-ui-bootstrap');
 require('bootstrap-sass');
 require('ui-router-extras');
 require('font-awesome-webpack');
+require('angular-fcsa-number');
 
 require('../styles/index.scss');
 

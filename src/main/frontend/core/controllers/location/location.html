@@ -1,29 +1,42 @@
 <div class="popup-shadow" ui-sref="{{previousState?previousState:'container.dashboard'}}"></div>
-<div class="popup panel">
-	<div class="panel-body">
-		<div class="container-fluid">
-			<a class="popup-close" ui-sref="{{previousState?previousState:'container.dashboard'}}">Close</a>
-			<form class="form-horizontal">
-			  <div class="form-group">
-			    <label for="inputName" class="col-sm-2 control-label">Name</label>
-			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="inputName" placeholder="Name" ng-model="location.name">
-			    </div>
-			  </div>
-			  <div class="form-group">
-			    <div class="col-sm-offset-2 col-sm-10">
-			      <div class="checkbox">
-			        <label>
-			          <input type="checkbox" ng-model="location.enabled"> Enabled
-			        </label>
-			      </div>
-			    </div>
-			  </div>
-			  <div class="form-group">
-			    <div class="col-sm-offset-2 col-sm-10">
-			      <button type="submit" class="btn btn-primary" ng-click="save()">Save</button>
-			    </div>
-			  </div>
+<div class="popup">
+	<div class="section-header">
+        <i class="fa fa-times tool pull-right" ui-sref="{{previousState?previousState:'container.dashboard'}}"></i>
+		<h2>{{title}}</h2>
+	</div>
+    <div class="popup-content">
+		<div class="container">
+			<form class="form-horizontal" name="locationForm">
+				<div class="row">
+					<div class="col-sm-12">
+					  <div class="form-group">
+					    <label for="inputName" class="col-sm-2 control-label">Name</label>
+					    <div class="col-sm-10">
+					      <input type="text" class="form-control" id="inputName" placeholder="Name" ng-model="location.name" required>
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label class="col-sm-2 control-label">Enabled</label>
+					    <div class="col-sm-10">
+					      <div class="checkbox">
+					        <label>
+					          <input type="checkbox" ng-model="location.enabled"> Enabled
+					        </label>
+					      </div>
+					    </div>
+					  </div>
+					  <div class="row">
+				    	<div class="col-sm-offset-2 col-sm-10">
+					  	<hr/>
+				    	</div>
+				    </div>
+					  <div class="form-group">
+					    <div class="col-sm-offset-2 col-sm-10">
+					  		<button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="locationForm.$valid && save()">Save</button>
+					    </div>
+					  </div>
+					</div>
+				</div>
 			</form>
 		</div>
 	</div>

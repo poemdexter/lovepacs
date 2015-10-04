@@ -9,23 +9,28 @@ class LocationCtrl {
 
         $q.all([locationPromise,itemsPromise]).then(function(data) {
             $scope.location = data[0].data;
-            $scope.items = {};
+            $scope.items = [];
+            var items = {};
 
             angular.forEach(data[1].data, function(value, key) {
                 value.amount = 0;
-                $scope.items[value.id] = value;
+                items[value.id] = value;
             });
 
             angular.forEach($scope.location.inventory, function(value, key) {
-                $scope.items[value.itemId].amount = value.quantity;
-                $scope.items[value.itemId].contentId = value.id;
+                items[value.itemId].amount = value.quantity;
+                items[value.itemId].contentId = value.id;
+            });
+
+            angular.forEach(items, function(value, key) {
+                $scope.items.push(value);
             });
         });
 
         $scope.getTotalAmount = function() {
             var total = 0;
             angular.forEach($scope.items, function(value, key) {
-                if ($scope.items[key].amount)
+                if (value.amount && value.enabled)
                     total = total + parseInt($scope.items[key].amount);
             });
             return total;
@@ -34,7 +39,7 @@ class LocationCtrl {
         $scope.getTotalValue = function() {
             var total = 0;
             angular.forEach($scope.items, function(value, key) {
-                if ($scope.items[key].amount)
+                if (value.amount && value.enabled)
                     total = total + parseInt($scope.items[key].amount) * $scope.items[key].price;
             });
             return total;
@@ -51,9 +56,8 @@ class LocationCtrl {
                         "quantity": parseInt(value.amount)
                     });
             });
-
             ApiService.updateInventory($scope.location).then(function(data) {
-                $state.go("container.location", {'id':$stateParams.id}, { reload: true });
+                $state.go("container.inventory", {'id':$stateParams.id}, { reload: true });
             });
         };
     }

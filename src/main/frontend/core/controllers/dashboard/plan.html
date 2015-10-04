@@ -1,0 +1,39 @@
+<div class="popup-shadow" ui-sref="container.dashboard"></div>
+<div class="popup">
+	<div class="section-header">
+        <i class="fa fa-times tool pull-right" ui-sref="container.dashboard"></i>
+		<h2>{{title}}</h2>
+	</div>
+	<div class="popup-content">
+		<div class="container">
+			<form class="form-horizontal" name="planForm">
+				<div class="row">
+					<div class="col-sm-6">
+						<datepicker class="datepicker well" ng-model="plan.packDate" show-weeks="false"></datepicker>
+					</div>
+					<div class="col-sm-6">
+					  <table class="table">
+					  	<tr>
+					  		<th></th>
+					  		<th>Box</th>
+					  		<th>Amount</th>
+					  	</tr>
+					  	<tr ng-repeat="pack in packs">
+					  		<td><div class="checkbox">
+							    <label>
+							      <input type="checkbox" ng-model="pack.save" ng-click="disable(pack)">
+							    </label>
+							  </div>
+							</td>
+					  		<td>{{pack.name}}</td>
+					  		<td><input class="form-control input-sm" type="text" placeholder="Amount" ng-model="pack.quantity" ng-blur="enable(pack)" ng-required="pack.save"></td>
+					  	</tr>
+					  </table>
+					  <hr/>
+					  <button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="planForm.$valid && save()">Save</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

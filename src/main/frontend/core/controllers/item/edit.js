@@ -2,6 +2,7 @@ class ItemCtrl {
 
     constructor($scope, $stateParams, $state, ApiService){
     	var self = this;
+        $scope.title = "Edit Item";
 
     	ApiService.getItem($stateParams.id).then(function(data) {
     		$scope.item = data.data;

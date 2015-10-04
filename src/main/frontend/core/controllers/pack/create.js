@@ -4,6 +4,7 @@ class PackCtrl {
     	var self = this;
         this._$state = $state;
         this._ApiService = ApiService;
+        $scope.title = "Create Box";
 
         var itemsPromise =  ApiService.getItems();
 
@@ -24,7 +25,7 @@ class PackCtrl {
         $scope.getTotalAmount = function() {
             var total = 0;
             angular.forEach($scope.items, function(value, key) {
-                if ($scope.items[key].amount)
+                if (value.amount && value.enabled)
                     total = total + parseInt($scope.items[key].amount);
             });
             return total;
@@ -33,7 +34,7 @@ class PackCtrl {
         $scope.getTotalValue = function() {
             var total = 0;
             angular.forEach($scope.items, function(value, key) {
-                if ($scope.items[key].amount)
+                if (value.amount && value.enabled)
                     total = total + parseInt($scope.items[key].amount) * $scope.items[key].price;
             });
             return total;

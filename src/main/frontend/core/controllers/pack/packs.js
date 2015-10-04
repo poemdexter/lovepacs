@@ -4,7 +4,7 @@ class PacksCtrl {
     	var self = this;
     	
     	ApiService.getPacks().then(function(data) {
-    		self.packs = data.data;
+    		$scope.packs = data.data;
     	});
     }
 }

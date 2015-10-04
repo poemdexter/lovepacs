@@ -1,0 +1,53 @@
+<div class="popup-shadow" ui-sref="container.items"></div>
+<div class="popup">
+	<div class="section-header">
+        <i class="fa fa-times tool pull-right" ui-sref="container.users"></i>
+		<h2>{{title}}</h2>
+	</div>
+    <div class="popup-content">
+		<div class="container">
+			<form class="form-horizontal" name="userForm">
+			  <div class="form-group">
+			    <label for="inputName" class="col-sm-2 control-label">Username</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="inputName" placeholder="Username" ng-model="editUser.username" required ng-disabled="title == 'Edit User'">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputName" class="col-sm-2 control-label">Password</label>
+			    <div class="col-sm-10">
+			      <input type="password" class="form-control" id="inputName" placeholder="Password" ng-model="editUser.password" ng-required="title == 'Create User'">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="locationSelect" class="col-sm-2 control-label">Location</label>
+			    <div class="col-sm-10">
+			      <select required name="locationSelect" id="locationSelect" ng-model="editUser.location" class="form-control" 
+  ng-options="value.id as value.name for (key, value) in locations">
+			      </select>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label class="col-sm-2 control-label">Enable</label>
+			    <div class="col-sm-10">
+			      <div class="checkbox">
+			        <label>
+			          <input type="checkbox" ng-model="editUser.enabled"> Enabled
+			        </label>
+			      </div>
+			    </div>
+			  </div>
+			  <div class="row">
+		    	<div class="col-sm-offset-2 col-sm-10">
+			  	<hr/>
+		    	</div>
+		    </div>
+			  <div class="form-group">
+		    	<div class="col-sm-offset-2 col-sm-10">
+			  <button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="userForm.$valid && save()">Save</button>
+		    	</div>
+		    </div>
+			</form>
+		</div>
+	</div>
+</div>

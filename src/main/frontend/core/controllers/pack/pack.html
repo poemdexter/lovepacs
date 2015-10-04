@@ -1,17 +1,50 @@
 <div class="popup-shadow" ui-sref="container.packs"></div>
-<div class="popup panel">
-	<div class="panel-body">
-		<div class="container-fluid">
-			<a class="popup-close" ui-sref="container.packs">Close</a>
-			<form class="form-horizontal">
+<div class="popup">
+	<div class="section-header">
+        <i class="fa fa-times tool pull-right" ui-sref="container.packs"></i>
+		<h2>{{title}}</h2>
+	</div>
+    <div class="popup-content">
+		<div class="container">
+			<form class="form-horizontal" name="packForm">
 			  <div class="form-group">
 			    <label for="inputName" class="col-sm-2 control-label">Name</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="inputName" placeholder="Name" ng-model="pack.name">
+			      <input type="text" class="form-control" id="inputName" placeholder="Name" ng-model="pack.name" required>
+			    </div>
+			  </div>
+			  <br/>
+			  <div class="form-group">
+			    <label class="col-sm-2 control-label">Contents</label>
+			    <div class="col-sm-10">
+			      <table class="table">
+				  	<tr>
+				  		<th>Item</th>
+				  		<th>Amount</th>
+				  		<th>Value</th>
+				  		<th>Total</th>
+				  	</tr>
+				  	<tr ng-repeat="item in items | filter:{ enabled: true }">
+				  		<td>{{item.name}}</td>
+				  		<td>
+		                	<input type="number" class="form-control input-sm" placeholder="Amount" ng-model="item.amount">
+		                </td>
+				  		<td>{{item.price | currency:"$"}}</td>
+				  		<td>
+				  			{{(item.price*(item.amount?item.amount:0)) | currency:"$"}}
+				  		</td>
+				  	</tr>
+		            <tr>
+		                <th colspan="2">Total</th>
+		                <th>{{getTotalAmount()}}</th>
+		                <th>{{getTotalValue() | currency:"$"}}</th>
+		            </tr>
+					</table>
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <div class="col-sm-offset-2 col-sm-10">
+			    <label class="col-sm-2 control-label">Enabled</label>
+			    <div class="col-sm-10">
 			      <div class="checkbox">
 			        <label>
 			          <input type="checkbox" ng-model="pack.enabled"> Enabled
@@ -19,34 +52,14 @@
 			      </div>
 			    </div>
 			  </div>
-			 
-				<table class="table">
-			  	<tr>
-			  		<th>Item</th>
-			  		<th>Amount</th>
-			  		<th>Value</th>
-			  		<th>Total</th>
-			  	</tr>
-			  	<tr ng-repeat="item in items">
-			  		<td>{{item.name}}</td>
-			  		<td>
-	                	<input type="text" class="form-control" placeholder="Amount" ng-model="item.amount">
-	                </td>
-			  		<td>{{item.price | currency:"$"}}</td>
-			  		<td>
-			  			{{(item.price*(item.amount?item.amount:0)) | currency:"$"}}
-			  		</td>
-			  	</tr>
-	            <tr>
-	                <th colspan="2">Total</th>
-	                <th>{{getTotalAmount()}}</th>
-	                <th>{{getTotalValue() | currency:"$"}}</th>
-	            </tr>
-				</table>
-			  
+			  <div class="row">
+		    	<div class="col-sm-offset-2 col-sm-10">
+			  	<hr/>
+		    	</div>
+		    </div>
 			  <div class="form-group">
 			    <div class="col-sm-offset-2 col-sm-10">
-			      <button type="submit" class="btn btn-primary" ng-click="save()">Save</button>
+			  		<button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="packForm.$valid && save()">Save</button>
 			    </div>
 			  </div>
 			</form>

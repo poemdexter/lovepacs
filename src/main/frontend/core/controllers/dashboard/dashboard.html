@@ -1,1 +1,44 @@
-dashboards
+<div class="page-header">
+    <button type="button" class="btn btn-primary btn-lg  plan-complete pull-right" ui-sref="container.dashboard.create"><i class="fa fa-plus"></i> Add New Plan</button>
+    <h1>Dashboard <small>for {{location.name}}</small></h1>
+</div>
+
+
+<section class="plan" ng-repeat="plan in plans" ng-class="plan.minus ? 'section-danger':'section-success'">
+    <div class="section-header">
+        <i class="fa fa-gear tool pull-right" ui-sref="container.dashboard.plan({'id':{{plan.id}}})"></i>
+        <h2>{{plan.packDate | date:'longDate'}}</h2>
+    </div>
+    <div class="popup-content">
+        <div class="row">
+            <div class="col-sm-5">
+                <!--<h3>Planned Boxes</h3>-->
+                <div class="plan-packs clearfix">
+                    <div class="plan-packs-pack" ng-repeat="pack in plan.packs">{{pack.name}} <span class="badge">{{pack.quantity}}</span></div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-primary btn-lg btn-block plan-complete" ng-click="complete(plan.id)"><i class="fa fa-check"></i> Complete Pack</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-7">
+                <!--<h3>Items</h3>-->
+                <table class="table plan-table table-condensed">
+                    <tr>
+                        <th>Item</th>
+                        <th class="table-numeric">Required</th>
+                        <th class="table-numeric">Surplus/Shortfall</th>
+                    </tr>
+                    <tr ng-repeat="item in plan.items | orderBy:'surplus' | filter:{ enabled: true }" class="plan-item " ng-class="item.surplus < 0 ? 'plan-item-minus':'plan-item-plus'">
+                        <td>{{item.name}}</td>
+                        <td class="table-numeric plan-item-need">{{item.quantity}}</td>
+                        <td class="table-numeric plan-item-shortfall"> {{Math.abs(item.surplus)}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<div ui-view="modal"></div>

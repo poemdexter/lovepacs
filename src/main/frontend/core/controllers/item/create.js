@@ -2,6 +2,7 @@ class ItemCtrl {
 
     constructor($scope, $stateParams, $state, ApiService){
     	var self = this;
+        $scope.title = "Create Item";
 
     	$scope.item = {
             "id":null,

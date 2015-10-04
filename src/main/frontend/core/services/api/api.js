@@ -3,8 +3,37 @@ class ApiService {
         this._$http = $http;
     }
 
-    getUser() {
+    getUsers() {
+        return this._$http.get('/user/', {});
+    }
+
+    getUser(id) {
+        return this._$http.get('/user/'+id, {});
+    }
+
+    updateUser(data) {
+        return this._$http.put('/user/', data);
+    }
+
+    saveUser(data) {
+        console.log(JSON.stringify(data));
+        return this._$http.post('/user/', data);
+    }
+
+    getCurrentUser() {
         return this._$http.get('/user/info/', {});
+    }
+
+    getPlans(id) {
+        return this._$http.get('/location/'+id+'/plan/', {});
+    }
+
+    getPlan(id) {
+        return this._$http.get('/plan/'+id, {});
+    }
+
+    updatePlan(data) {
+        return this._$http.put('/plan/', data);
     }
 
     getLocations() {
@@ -57,6 +86,11 @@ class ApiService {
 
     updatePack(data) {
         return this._$http.put('/box/', data);
+    }
+
+    completePlan(id) {
+        console.log(id);
+        return this._$http.post('/plan/'+id+'/complete');
     }
 
     static templateFactory($http){

@@ -1,18 +1,18 @@
 class ContainerCtrl {
 
     constructor($rootScope, $scope, $stateParams, ApiService){
-			$rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
+		$rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
 		    $rootScope.previousState = from.name;
 		    $rootScope.currentState = to.name;
 		});
 
-		ApiService.getLocations().then(function(data) {
-    		$scope.locations = data.data;
-    	});
-
-    	ApiService.getUser().then(function(data) {
-    		$rootScope.user = data.data;
-    	});
+        ApiService.getLocations().then(function(data) {
+            $scope.locations = data.data;
+        });
+        
+        ApiService.getCurrentUser().then(function(data) {
+            $rootScope.user = data.data;
+        });
     }
 }
 

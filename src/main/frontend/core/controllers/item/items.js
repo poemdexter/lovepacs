@@ -4,7 +4,7 @@ class ItemsCtrl {
     	var self = this;
     	
     	ApiService.getItems().then(function(data) {
-    		self.items = data.data;
+    		$scope.items = data.data;
     	});
     }
 }

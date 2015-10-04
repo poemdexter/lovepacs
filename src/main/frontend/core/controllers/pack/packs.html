@@ -1,25 +1,34 @@
-<div class="row">
-    <div class="col-sm-12">
-        <button type="button" class="btn btn-default" ui-sref="container.packs.create">New Pack</button>
-    </div>
+<div class="page-header">
+    <h1>Boxes <small>for all locations</small></h1>
 </div>
-<div class="row">
-    <div class="col-sm-12">
-        <table class="table">
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Enabled</th>
-                <th></th>
-            </tr>
-            <tr ng-repeat="pack in controller.packs">
-                <td>{{pack.id}}</td>
-                <td>{{pack.name}}</td>
-                <td>{{pack.enabled}}</td>
-                <td><a ui-sref="container.packs.pack({'id':{{pack.id}}})"><i class="fa fa-pencil"></i></a></td>
-            </tr>
-        </table>
+
+<section>
+    <div class="section-header">
+        <i class="fa fa-plus tool pull-right" ui-sref="container.packs.create"></i>
+        <h2>Boxes</h2>
     </div>
-</div>
+    <div class="popup-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Enabled</th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="pack in packs">
+                        <td>{{pack.id}}</td>
+                        <td>{{pack.name}}</td>
+                        <td>{{pack.enabled}}</td>
+                        <td><a ui-sref="container.packs.pack({'id':{{pack.id}}})"><i class="fa fa-pencil"></i></a></td>
+                    </tr>
+                </table>
+                <br/>
+                <button type="button" class="btn btn-primary btn-lg btn-block"  ui-sref="container.packs.create"><i class="fa fa-plus"></i> Create New Box</button>
+            </div>
+        </div>
+    </div>
+</section>
 
 <div ui-view="modal"></div>
