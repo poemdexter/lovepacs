@@ -24,6 +24,13 @@ public class PlanBox {
 
     public PlanBox() {}
 
+    public PlanBox(Integer planId, Integer boxId, Integer quantity)
+    {
+        this.planId = planId;
+        this.boxId = boxId;
+        this.quantity = quantity;
+    }
+
     public PlanBox(Integer id, Integer planId, Integer boxId, Integer quantity)
     {
         this.id = id;

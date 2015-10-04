@@ -54,8 +54,12 @@ public class PlanController {
         Plan plan = new Plan(planJson.getId(), planJson.getLocation(), planJson.getPackDate(), planJson.getEnabled());
         Plan savedPlan = planRepository.save(plan);
         planJson.setId(savedPlan.getId());
+
+        // delete all plan boxes associated with plan and use new ones
+        planBoxRepository.deleteByPlanId(savedPlan.getId());
+
         for(PlanBoxJson planBoxJson : planJson.getPlanBoxes()) {
-            PlanBox planBox = new PlanBox(planBoxJson.getId(), savedPlan.getId(), planBoxJson.getBoxId(), planBoxJson.getQuantity());
+            PlanBox planBox = new PlanBox(savedPlan.getId(), planBoxJson.getBoxId(), planBoxJson.getQuantity());
             PlanBox savedPlanBox = planBoxRepository.save(planBox);
             planBoxJson.setId(savedPlanBox.getId());
         }
