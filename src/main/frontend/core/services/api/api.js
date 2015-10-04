@@ -3,6 +3,10 @@ class ApiService {
         this._$http = $http;
     }
 
+    getUser() {
+        return this._$http.get('/user/info/', {});
+    }
+
     getLocations() {
         return this._$http.get('/location/', {});
     }

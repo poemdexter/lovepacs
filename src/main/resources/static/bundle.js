@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "31faa7581cdd4553a70e"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "95182119407c4e5635cc"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -535,7 +535,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:5000/";
+/******/ 	__webpack_require__.p = "/";
 
 /******/ 	// __webpack_hash__
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
@@ -54086,7 +54086,7 @@
 /* 60 */
 /***/ function(module, exports) {
 
-	var v1="<div class=\"popup-shadow\" ui-sref=\"container.items\"></div> <div class=\"popup panel\"> <div class=\"panel-body\"> <div class=\"container-fluid\"> <a class=\"popup-close\" ui-sref=\"container.items\">Close</a> <form class=\"form-horizontal\"> <div class=\"form-group\"> <label for=\"inputName\" class=\"col-sm-2 control-label\">Name</label> <div class=\"col-sm-10\"> <input type=\"text\" class=\"form-control\" id=\"inputName\" placeholder=\"Name\" ng-model=\"item.name\"> </div> </div> <div class=\"form-group\"> <label for=\"inputPrice\" class=\"col-sm-2 control-label\">Value</label> <div class=\"col-sm-10\"> <div class=\"input-group\"> <div class=\"input-group-addon\">$</div> <input type=\"text\" class=\"form-control\" id=\"inputPrice\" placeholder=\"Price\" ng-model=\"item.price\"> </div> </div> </div> <div class=\"form-group\"> <div class=\"col-sm-offset-2 col-sm-10\"> <div class=\"checkbox\"> <label> <input type=\"checkbox\"> Remember me </label> </div> </div> </div> <div class=\"form-group\"> <div class=\"col-sm-offset-2 col-sm-10\"> <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"save()\">Save</button> </div> </div> </form> </div> </div> </div>";
+	var v1="<div class=\"popup-shadow\" ui-sref=\"container.items\"></div> <div class=\"popup panel\"> <div class=\"panel-body\"> <div class=\"container-fluid\"> <a class=\"popup-close\" ui-sref=\"container.items\">Close</a> <form class=\"form-horizontal\"> <div class=\"form-group\"> <label for=\"inputName\" class=\"col-sm-2 control-label\">Name</label> <div class=\"col-sm-10\"> <input type=\"text\" class=\"form-control\" id=\"inputName\" placeholder=\"Name\" ng-model=\"item.name\"> </div> </div> <div class=\"form-group\"> <label for=\"inputPrice\" class=\"col-sm-2 control-label\">Value</label> <div class=\"col-sm-10\"> <div class=\"input-group\"> <div class=\"input-group-addon\">$</div> <input type=\"text\" class=\"form-control\" id=\"inputPrice\" placeholder=\"Price\" ng-model=\"item.price\"> </div> </div> </div> <div class=\"form-group\"> <div class=\"col-sm-offset-2 col-sm-10\"> <div class=\"checkbox\"> <label> <input type=\"checkbox\" ng-model=\"item.enabled\"> Enabled </label> </div> </div> </div> <div class=\"form-group\"> <div class=\"col-sm-offset-2 col-sm-10\"> <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"save()\">Save</button> </div> </div> </form> </div> </div> </div>";
 	window.angular.module(["ng"]).run(["$templateCache",function(c){c.put("controllers/item/item.html", v1)}]);
 	module.exports=v1;
 
