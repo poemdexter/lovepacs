@@ -64,10 +64,11 @@ public class PlanController {
 
     // fixme: rework with planbox
     @RequestMapping(value = "/{id}/complete", method = RequestMethod.POST)
-    void completePlan(@PathVariable("id") final int id, @RequestBody Plan plan) {
+    void completePlan(@PathVariable("id") final int id, @RequestBody PlanJson planJson) {
+        Plan plan = new Plan(planJson.getId(), planJson.getLocation(), planJson.getPackDate());
         plan.setEnabled(false);
         planRepository.save(plan);
-        planService.removePlanItemsFromInventory(plan);
+        planService.removePlanItemsFromInventory(planJson);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

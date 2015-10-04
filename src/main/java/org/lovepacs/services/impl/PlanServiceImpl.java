@@ -1,9 +1,13 @@
 package org.lovepacs.services.impl;
 
+import org.lovepacs.json.PlanBoxJson;
+import org.lovepacs.json.PlanJson;
 import org.lovepacs.json.ShortageJson;
 import org.lovepacs.models.Inventory;
 import org.lovepacs.models.Plan;
+import org.lovepacs.models.PlanBox;
 import org.lovepacs.repositories.InventoryRepository;
+import org.lovepacs.repositories.PlanBoxRepository;
 import org.lovepacs.services.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,41 +28,47 @@ public class PlanServiceImpl implements PlanService {
     @Autowired
     InventoryRepository inventoryRepository;
 
+    @Autowired
+    PlanBoxRepository planBoxRepository;
+
     @Override
-    public void removePlanItemsFromInventory(Plan plan) {
-        int boxesCreated = plan.getQuantity();
-        List<Map<String, Object>> results = jdbcTemplate.queryForList(removeItemsSQL, plan.getBoxId(), plan.getLocationId());
-        for(Map<String, Object> result : results) {
-            Integer itemId = (Integer) result.get("item");
-            Integer itemPerBox = (Integer) result.get("per_box");
-            Integer inventoryLeft = (Integer) result.get("inventory_left");
+    public void removePlanItemsFromInventory(PlanJson plan) {
+        for (PlanBoxJson planBoxJson : plan.getPlanBoxes()) {
+            int boxesCreated = planBoxJson.getQuantity();
+            List<Map<String, Object>> results = jdbcTemplate.queryForList(removeItemsSQL, planBoxJson.getBoxId(), plan.getLocation());
+            for(Map<String, Object> result : results) {
+                Integer itemId = (Integer) result.get("item");
+                Integer itemPerBox = (Integer) result.get("per_box");
+                Integer inventoryLeft = (Integer) result.get("inventory_left");
 
-            int itemsUsed = itemPerBox * boxesCreated;
-            int newInventory = inventoryLeft - itemsUsed;
+                int itemsUsed = itemPerBox * boxesCreated;
+                int newInventory = inventoryLeft - itemsUsed;
 
-            inventoryRepository.save(new Inventory(plan.getLocationId(), itemId, newInventory));
+                inventoryRepository.save(new Inventory(plan.getLocation(), itemId, newInventory));
+            }
         }
     }
 
     @Override
     public List<ShortageJson> getPlanShortages(Plan plan) {
         List<ShortageJson> shortages = new ArrayList<>();
+        List<PlanBox> planBoxes = planBoxRepository.findAllByPlanId(plan.getId());
+        for (PlanBox planBox : planBoxes) {
+            int boxesCreated = planBox.getQuantity();
+            List<Map<String, Object>> results = jdbcTemplate.queryForList(removeItemsSQL, planBox.getBoxId(), plan.getLocationId());
+            for(Map<String, Object> result : results) {
+                Integer itemId = (Integer) result.get("item");
+                Integer itemPerBox = (Integer) result.get("per_box");
+                Integer inventoryLeft = (Integer) result.get("inventory_left");
 
-        int boxesCreated = plan.getQuantity();
-        List<Map<String, Object>> results = jdbcTemplate.queryForList(removeItemsSQL, plan.getBoxId(), plan.getLocationId());
-        for(Map<String, Object> result : results) {
-            Integer itemId = (Integer) result.get("item");
-            Integer itemPerBox = (Integer) result.get("per_box");
-            Integer inventoryLeft = (Integer) result.get("inventory_left");
+                int itemsUsed = itemPerBox * boxesCreated;
+                int newInventory = inventoryLeft - itemsUsed;
 
-            int itemsUsed = itemPerBox * boxesCreated;
-            int newInventory = inventoryLeft - itemsUsed;
-
-            if (newInventory < 0) {
-                // todo shortage!
+                if (newInventory < 0) {
+                    // todo shortage!
+                }
             }
         }
-
         return shortages;
     }
 }
