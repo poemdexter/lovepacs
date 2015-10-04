@@ -77,7 +77,7 @@ public class LocationController {
         }
     }
 
-    @RequestMapping(value = "/{id}/plans", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/plan", method = RequestMethod.GET)
     List<PlanJson> getPlansByLocationId(@PathVariable final int id) {
         List<PlanJson> planJsonList = new ArrayList<>();
         List<Plan> plans = planRepository.findAllByLocationIdOrderByPackDateDesc(id);

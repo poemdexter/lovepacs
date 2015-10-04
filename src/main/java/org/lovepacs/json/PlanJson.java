@@ -35,7 +35,7 @@ public class PlanJson {
         return planBoxes;
     }
 
-    public void setPlanBoxes(List<PlanBoxJson> box) {
+    public void setPlanBoxes(List<PlanBoxJson> planBoxes) {
         this.planBoxes = planBoxes;
     }
 
