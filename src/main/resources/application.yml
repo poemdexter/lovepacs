@@ -1,6 +1,9 @@
 server:
   port: 5000
 
+logging:
+  level: WARN
+
 spring:
   datasource:
     url: jdbc:mysql://my01.everleap.com/MySQL_2177_inventory
@@ -13,7 +16,7 @@ spring:
     initial-size: 1
 
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: none
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
@@ -22,6 +25,3 @@ spring:
 
 security:
   basic.enabled: false
-
-logging:
-  level.org.springframework.security: INFO
