@@ -1,10 +1,13 @@
 package org.lovepacs.controllers;
 
+import org.lovepacs.exception.UserNotFoundException;
 import org.lovepacs.json.UserJson;
 import org.lovepacs.models.User;
 import org.lovepacs.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,24 +41,6 @@ public class UserController {
         return (List<User>)userRepository.findAll();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    void disableUser(@PathVariable("id") final String id) {
-        User user = userRepository.findOne(id);
-        if (user != null) {
-            user.setEnabled(false);
-            userRepository.save(user);
-        }
-    }
-
-    @RequestMapping(value = "/{id}/enable", method = RequestMethod.PUT)
-    void enableUser(@PathVariable("id") final String id) {
-        User user = userRepository.findOne(id);
-        if (user != null) {
-            user.setEnabled(true);
-            userRepository.save(user);
-        }
-    }
-
     @RequestMapping(value = "/", method = RequestMethod.POST)
     void createUser(@RequestBody UserJson userJson) {
 
@@ -63,16 +48,31 @@ public class UserController {
         user.setName(userJson.getName());
         user.setPassword(passwordEncoder.encode(userJson.getPassword()));
         user.setEnabled(userJson.getEnabled());
+        user.setLocation(userJson.getLocation());
+
+        userRepository.save(user);
+
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    void updateUser(@RequestBody UserJson userJson) {
+
+        User user = userRepository.findByName(userJson.getName());
+
+        if(user == null) {
+            throw new UserNotFoundException();
+        }
+
+        user.setPassword(passwordEncoder.encode(userJson.getPassword()));
+        user.setEnabled(userJson.getEnabled());
+        user.setLocation(userJson.getLocation());
 
         userRepository.save(user);
     }
 
-    @RequestMapping(value = "/password", method = RequestMethod.PUT)
-    void updateUserPassword(@RequestBody UserJson userJson) {
+    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such username")
+    @ExceptionHandler(UsernameNotFoundException.class)
+    void notFoundHandler() {
 
-        User user = userRepository.findOne(userJson.getName());
-        user.setPassword(passwordEncoder.encode(userJson.getPassword()));
-
-        userRepository.save(user);
     }
 }

@@ -179,6 +179,7 @@
         #actions
         {
             margin: 25px 0 0 0;
+            text-align: center;
         }
 
         #submit
@@ -205,7 +206,7 @@
             border-style: solid;
             border-color: #d69e31 #e3a037 #d5982d #e3a037;
 
-            float: left;
+            align: center;
             height: 35px;
             padding: 0;
             width: 120px;
@@ -239,12 +240,11 @@
             border: none;
         }
 
-        #actions a
-        {
-            color: #3151A2;
-            float: right;
+        #error {
+            display: block;
+            color: #E1351C;
             line-height: 35px;
-            margin-left: 10px;
+            text-align: center;
         }
     </style>
 </head>
@@ -258,6 +258,9 @@
     </fieldset>
     <fieldset id="actions">
         <input type="submit" id="submit" value="Log in">
+        <#if error.isPresent()>
+            <div id="error">The email or password you have entered is invalid, try again.</div>
+        </#if>
     </fieldset>
 </form>
 
