@@ -60,11 +60,19 @@ create table inventory (
 create table plans (
   id int not null auto_increment,
   location int not null,
-  box int not null,
-  quantity int not null,
   packdate date not null,
   enabled tinyint not null default 1,
   primary key (id),
-  constraint fk_plan_location foreign key (location) references locations(id),
-  constraint fk_plan_box foreign key (box) references boxes(id)
+  constraint fk_plan_location foreign key (location) references locations(id)
+);
+
+create table plan_boxes (
+  id int not null auto_increment,
+  plan int not null,
+  box int not null,
+  quantity int not null,
+  primary key (id),
+  unique key uni_plan_box (plan, box),
+  constraint fk_pb_plan foreign key (plan) references plans(id),
+  constraint fk_pb_box foreign key (box) references boxes(id)
 );

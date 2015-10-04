@@ -17,13 +17,6 @@ public class Plan {
     private Integer locationId;
 
     @NotNull
-    @Column(name = "box")
-    private Integer boxId;
-
-    @NotNull
-    private Integer quantity;
-
-    @NotNull
     @Column(name = "packdate")
     private Date packDate;
 
@@ -32,22 +25,20 @@ public class Plan {
 
     public Plan() {}
 
+    public Plan(Integer id, Integer locationId, Date packDate) {
+        this.id = id;
+        this.locationId = locationId;
+        this.packDate = packDate;
+    }
+
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
     public Integer getId() { return id; }
 
-    public Integer getBoxId() {
-        return boxId;
-    }
-
     public Integer getLocationId() {
         return locationId;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
     }
 
     public Boolean getEnabled() { return enabled; }

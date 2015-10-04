@@ -1,17 +1,8 @@
 package org.lovepacs.controllers;
 
-import org.lovepacs.json.InventoryJson;
-import org.lovepacs.json.InventoryNeedJson;
-import org.lovepacs.json.ShortageJson;
-import org.lovepacs.json.LocationJson;
-import org.lovepacs.models.Inventory;
-import org.lovepacs.models.Item;
-import org.lovepacs.models.Location;
-import org.lovepacs.models.Plan;
-import org.lovepacs.repositories.InventoryRepository;
-import org.lovepacs.repositories.ItemRepository;
-import org.lovepacs.repositories.LocationRepository;
-import org.lovepacs.repositories.PlanRepository;
+import org.lovepacs.json.*;
+import org.lovepacs.models.*;
+import org.lovepacs.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +21,9 @@ public class LocationController {
 
     @Autowired
     PlanRepository planRepository;
+
+    @Autowired
+    PlanBoxRepository planBoxRepository;
 
     @Autowired
     ItemRepository itemRepository;
@@ -102,8 +96,29 @@ public class LocationController {
     }
 
     @RequestMapping(value = "/{id}/plans", method = RequestMethod.GET)
-    List<Plan> getPlansByLocationId(@PathVariable final int id) {
-        return planRepository.findAllByLocationId(id);
+    List<PlanJson> getPlansByLocationId(@PathVariable final int id) {
+        List<PlanJson> planJsonList = new ArrayList<>();
+        List<Plan> plans = planRepository.findAllByLocationId(id);
+        for (Plan plan : plans) {
+            PlanJson jsonPlan = new PlanJson();
+            jsonPlan.setId(plan.getId());
+            jsonPlan.setLocation(plan.getLocationId());
+            jsonPlan.setPackDate(plan.getPackDate());
+            jsonPlan.setEnabled(plan.getEnabled());
+            List<PlanBoxJson> planBoxJsonList = new ArrayList<>();
+            List<PlanBox> planBoxes = planBoxRepository.findAllByPlanId(plan.getId());
+            for (PlanBox planBox : planBoxes) {
+                PlanBoxJson jsonPlanBox = new PlanBoxJson();
+                jsonPlanBox.setId(planBox.getId());
+                jsonPlanBox.setPlanId(planBox.getPlanId());
+                jsonPlanBox.setBoxId(planBox.getBoxId());
+                jsonPlanBox.setQuantity(planBox.getQuantity());
+                planBoxJsonList.add(jsonPlanBox);
+            }
+            jsonPlan.setPlanBoxes(planBoxJsonList);
+            planJsonList.add(jsonPlan);
+        }
+        return planJsonList;
     }
 
     @RequestMapping(value = "/{id}/enable", method = RequestMethod.PUT)
