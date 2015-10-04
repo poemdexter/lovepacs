@@ -116,12 +116,7 @@ public class LocationController {
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
     LocationJson updateLocation(@RequestBody LocationJson locationJson) {
-        if(locationJson.getId() == null) {
-            // It's a create
-            return createLocation(locationJson);
-        }
-
-        Location location = new Location(locationJson.getName(), locationJson.getEnabled());
+        Location location = new Location(locationJson.getId(), locationJson.getName(), locationJson.getEnabled());
         location = locationRepository.save(location);
 
         // check to see if we're modifying inventory
@@ -134,18 +129,9 @@ public class LocationController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     LocationJson createLocation(@RequestBody LocationJson locationJson) {
-        if(locationJson.getId() != null) {
-            // It's an update
-            return updateLocation(locationJson);
-        }
-
-        Location location = new Location();
-        location.setName(locationJson.getName());
-        location.setEnabled(locationJson.getEnabled());
-
+        Location location = new Location(locationJson.getName(), locationJson.getEnabled());
         location = locationRepository.save(location);
         locationJson.setId(location.getId());
-
         return locationJson;
     }
 

@@ -19,6 +19,12 @@ public class Location {
 
     public Location() {}
 
+    public Location(Integer id, String name, Boolean enabled) {
+        this.id = id;
+        this.name = name;
+        this.enabled = enabled;
+    }
+
     public Location(String name, Boolean enabled) {
         this.name = name;
         this.enabled = enabled;
