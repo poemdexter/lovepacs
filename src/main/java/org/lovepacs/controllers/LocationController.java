@@ -3,6 +3,7 @@ package org.lovepacs.controllers;
 import org.lovepacs.json.*;
 import org.lovepacs.models.*;
 import org.lovepacs.repositories.*;
+import org.lovepacs.services.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,9 @@ public class LocationController {
 
     @Autowired
     ItemRepository itemRepository;
+
+    @Autowired
+    PlanService planService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     LocationJson getLocation(@PathVariable("id") final int id) {
@@ -63,29 +67,7 @@ public class LocationController {
     List<Location> getAllLocations() {
         return (List<Location>)locationRepository.findAll();
     }
-/*
-    @RequestMapping(value = "/inventory", method = RequestMethod.GET)
-    List<InventoryNeedJson> getAllLocationInventories() {
-        List<InventoryNeedJson> inventoryNeedList = new ArrayList<>();
 
-        List<Location> locations = (List<Location>) locationRepository.findAll();
-        for (Location location : locations) {
-            InventoryNeedJson inventoryNeed = new InventoryNeedJson();
-            inventoryNeed.setName(location.getName());
-
-            List<ShortageJson> itemNeedList = new ArrayList<>();
-            List<Inventory> inventories = inventoryRepository.findAllByLocationId(location.getId());
-            for (Inventory inventory : inventories) {
-                Item item = itemRepository.findOne(inventory.getItemId());
-                itemNeedList.add(new ShortageJson(item.getName(), inventory.getQuantity()));
-            }
-            inventoryNeed.setItems(itemNeedList);
-            inventoryNeedList.add(inventoryNeed);
-        }
-
-        return inventoryNeedList;
-    }
-*/
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     void disableLocation(@PathVariable("id") final int id) {
         Location location = locationRepository.findOne(id);
@@ -98,7 +80,7 @@ public class LocationController {
     @RequestMapping(value = "/{id}/plans", method = RequestMethod.GET)
     List<PlanJson> getPlansByLocationId(@PathVariable final int id) {
         List<PlanJson> planJsonList = new ArrayList<>();
-        List<Plan> plans = planRepository.findAllByLocationId(id);
+        List<Plan> plans = planRepository.findAllByLocationIdOrderByPackDateDesc(id);
         for (Plan plan : plans) {
             PlanJson jsonPlan = new PlanJson();
             jsonPlan.setId(plan.getId());
@@ -152,7 +134,6 @@ public class LocationController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     LocationJson createLocation(@RequestBody LocationJson locationJson) {
-
         if(locationJson.getId() != null) {
             // It's an update
             return updateLocation(locationJson);
@@ -169,13 +150,14 @@ public class LocationController {
         return locationJson;
     }
 
+    @RequestMapping(value = "/{id}/shortages", method = RequestMethod.GET)
+    List<ShortageJson> getShortages(@PathVariable("id") final int id) {
+        return planService.getPlanShortagesByLocation(id);
+    }
 
     private void updateInventoryItems(Integer locationId, List<InventoryJson> inventoryItems) {
-
         List<Inventory> currentInventory = inventoryRepository.findAllByLocationId(locationId);
-
         for(InventoryJson inventoryItem : inventoryItems) {
-
             if(inventoryItem.getId() == null) {
                 // New item
                 Inventory myInventory = new Inventory();

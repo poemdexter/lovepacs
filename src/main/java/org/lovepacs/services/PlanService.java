@@ -10,5 +10,5 @@ public interface PlanService {
 
     void removePlanItemsFromInventory(PlanJson plan);
 
-    List<ShortageJson> getPlanShortages(Plan plan);
+    List<ShortageJson> getPlanShortagesByLocation(Integer locationId);
 }

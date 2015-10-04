@@ -62,7 +62,6 @@ public class PlanController {
         return planJson;
     }
 
-    // fixme: rework with planbox
     @RequestMapping(value = "/{id}/complete", method = RequestMethod.POST)
     void completePlan(@PathVariable("id") final int id, @RequestBody PlanJson planJson) {
         Plan plan = new Plan(planJson.getId(), planJson.getLocation(), planJson.getPackDate());
@@ -78,10 +77,5 @@ public class PlanController {
             plan.setEnabled(false);
             planRepository.save(plan);
         }
-    }
-
-    @RequestMapping(value = "/{id}/shortages", method = RequestMethod.GET)
-    List<ShortageJson> getShortages(@PathVariable("id") final int id) {
-        return planService.getPlanShortages(planRepository.findOne(id));
     }
 }

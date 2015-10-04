@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PlanRepository extends CrudRepository<Plan, Integer> {
 
-    List<Plan> findAllByLocationId(Integer locationId);
+    List<Plan> findAllByLocationIdOrderByPackDateDesc(Integer locationId);
 }
