@@ -1,6 +1,6 @@
 package org.lovepacs.config;
 
-import org.lovepacs.service.CurrentUserDetailsService;
+import org.lovepacs.services.impl.CurrentUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;

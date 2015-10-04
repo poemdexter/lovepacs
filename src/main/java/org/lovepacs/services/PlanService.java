@@ -4,5 +4,7 @@ import org.lovepacs.models.Plan;
 
 public interface PlanService {
 
-    public void removePlanItemsFromInventory(Plan plan);
+    void removePlanItemsFromInventory(Plan plan);
+
+    void getPlanShortages(Plan plan);
 }

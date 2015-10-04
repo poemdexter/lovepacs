@@ -1,4 +1,4 @@
-package org.lovepacs.service;
+package org.lovepacs.services.impl;
 
 import org.lovepacs.models.User;
 import org.lovepacs.repositories.UserRepository;

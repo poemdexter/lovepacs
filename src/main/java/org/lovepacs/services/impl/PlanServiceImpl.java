@@ -37,4 +37,21 @@ public class PlanServiceImpl implements PlanService {
             inventoryRepository.save(new Inventory(plan.getLocationId(), itemId, newInventory));
         }
     }
+
+    @Override
+    public void getPlanShortages(Plan plan) {
+
+        int boxesCreated = plan.getQuantity();
+        List<Map<String, Object>> results = jdbcTemplate.queryForList(removeItemsSQL, plan.getBoxId(), plan.getLocationId());
+        for(Map<String, Object> result : results) {
+            Integer itemId = (Integer) result.get("item");
+            Integer itemPerBox = (Integer) result.get("per_box");
+            Integer inventoryLeft = (Integer) result.get("inventory_left");
+
+            int itemsUsed = itemPerBox * boxesCreated;
+            int newInventory = inventoryLeft - itemsUsed;
+
+            inventoryRepository.save(new Inventory(plan.getLocationId(), itemId, newInventory));
+        }
+    }
 }

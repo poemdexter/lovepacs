@@ -2,7 +2,7 @@ package org.lovepacs.controllers;
 
 import org.lovepacs.json.InventoryJson;
 import org.lovepacs.json.InventoryNeedJson;
-import org.lovepacs.json.ItemNeedJson;
+import org.lovepacs.json.ShortageJson;
 import org.lovepacs.json.LocationJson;
 import org.lovepacs.models.Inventory;
 import org.lovepacs.models.Item;
@@ -64,7 +64,7 @@ public class LocationController {
     List<Location> getAllLocations() {
         return (List<Location>)locationRepository.findAll();
     }
-
+/*
     @RequestMapping(value = "/inventory", method = RequestMethod.GET)
     List<InventoryNeedJson> getAllLocationInventories() {
         List<InventoryNeedJson> inventoryNeedList = new ArrayList<>();
@@ -74,11 +74,11 @@ public class LocationController {
             InventoryNeedJson inventoryNeed = new InventoryNeedJson();
             inventoryNeed.setName(location.getName());
 
-            List<ItemNeedJson> itemNeedList = new ArrayList<>();
+            List<ShortageJson> itemNeedList = new ArrayList<>();
             List<Inventory> inventories = inventoryRepository.findAllByLocationId(location.getId());
             for (Inventory inventory : inventories) {
                 Item item = itemRepository.findOne(inventory.getItemId());
-                itemNeedList.add(new ItemNeedJson(item.getName(), inventory.getQuantity()));
+                itemNeedList.add(new ShortageJson(item.getName(), inventory.getQuantity()));
             }
             inventoryNeed.setItems(itemNeedList);
             inventoryNeedList.add(inventoryNeed);
@@ -86,7 +86,7 @@ public class LocationController {
 
         return inventoryNeedList;
     }
-
+*/
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     void disableLocation(@PathVariable("id") final int id) {
         Location location = locationRepository.findOne(id);

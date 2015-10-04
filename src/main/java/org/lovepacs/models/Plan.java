@@ -30,6 +30,8 @@ public class Plan {
     @NotNull
     private Boolean enabled;
 
+    public Plan() {}
+
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
@@ -45,4 +47,8 @@ public class Plan {
     public Integer getQuantity() {
         return quantity;
     }
+
+    public Boolean getEnabled() { return enabled; }
+
+    public Date getPackDate() { return packDate; }
 }

@@ -45,5 +45,8 @@ public class PlanController {
         }
     }
 
-
+    @RequestMapping(value = "/{id}/shortages", method = RequestMethod.GET)
+    void getShortages(@PathVariable("id") final int id) {
+        planService.getPlanShortages(planRepository.findOne(id));
+    }
 }
