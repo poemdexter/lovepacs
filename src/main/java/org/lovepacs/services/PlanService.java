@@ -1,8 +1,7 @@
 package org.lovepacs.services;
 
 import org.lovepacs.json.PlanJson;
-import org.lovepacs.json.ShortageJson;
-import org.lovepacs.models.Plan;
+import org.lovepacs.json.ShortageLocationJson;
 
 import java.util.List;
 
@@ -10,5 +9,5 @@ public interface PlanService {
 
     void removePlanItemsFromInventory(PlanJson plan);
 
-    List<ShortageJson> getPlanShortagesByLocation(Integer locationId);
+    List<ShortageLocationJson> getAllLocationShortagesForWebsite();
 }

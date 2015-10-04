@@ -26,12 +26,6 @@ public class LocationController {
     @Autowired
     PlanBoxRepository planBoxRepository;
 
-    @Autowired
-    ItemRepository itemRepository;
-
-    @Autowired
-    PlanService planService;
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     LocationJson getLocation(@PathVariable("id") final int id) {
 
@@ -148,11 +142,6 @@ public class LocationController {
         updateInventoryItems(location.getId(), locationJson.getInventory());
 
         return locationJson;
-    }
-
-    @RequestMapping(value = "/{id}/shortages", method = RequestMethod.GET)
-    List<ShortageJson> getShortages(@PathVariable("id") final int id) {
-        return planService.getPlanShortagesByLocation(id);
     }
 
     private void updateInventoryItems(Integer locationId, List<InventoryJson> inventoryItems) {
